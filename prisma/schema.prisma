@@ -1,0 +1,67 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Utilisateur {
+  id           Int      @id @default(autoincrement())
+  nom          String
+  email        String   @unique
+  role         String
+  motDePasse   String
+  clients      Client[]
+  chambres     Chambre[]
+  reservations Reservation[]
+
+  @@map("utilisateurs")  
+}
+
+model Client {
+  id            Int      @id @default(autoincrement())
+  nom           String
+  prenom        String
+  telephone     String   @unique
+  utilisateurId Int
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  reservations  Reservation[]
+
+  @@map("clients")
+}
+
+model TypeChambre {
+  id      Int      @id @default(autoincrement())
+  type    String
+  chambres Chambre[]
+  @@map("typeChambres")
+}
+
+model Chambre {
+  id            Int      @id @default(autoincrement())
+  numeroChambre Int      @unique
+  prix          Float
+  typeId        Int
+  type          TypeChambre @relation(fields: [typeId], references: [id])
+  utilisateurId Int
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  reservations  Reservation[]
+
+  @@map("chambres")
+}
+
+model Reservation {
+  id            Int      @id @default(autoincrement())
+  dateDebut     DateTime
+  dateFin       DateTime
+  chambreId     Int
+  chambre       Chambre @relation(fields: [chambreId], references: [id])
+  clientId      Int
+  client        Client @relation(fields: [clientId], references: [id])
+  utilisateurId Int
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id])
+
+  @@map("reservations")
+}
