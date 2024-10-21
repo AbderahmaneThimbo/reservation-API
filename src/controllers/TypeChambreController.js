@@ -1,9 +1,11 @@
-import prisma from "../config/prisma.js";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 class TypeChambreController {
   static async creerTypeChambre(req, res) {
-    const { type } = req.body;
     try {
+      const { type } = req.body;
       const nouveauTypeChambre = await prisma.typeChambre.create({
         data: {
           type
@@ -57,11 +59,17 @@ class TypeChambreController {
     const { id } = req.params;
     const { type } = req.body;
     try {
+      const typeExistant = await prisma.typeChambre.findUnique({
+        where: { id: parseInt(id) }
+      });
+      if (!typeExistant) {
+        return res.status(404).json({ message: "Type de chambre non trouvé" });
+      }
       const typeChambreMisAJour = await prisma.typeChambre.update({
         where: { id: parseInt(id) },
         data: { type }
       });
-      res.json({ message: "Type dde chambre mise à jour avec succès" });
+      return res.json({ message: "Type dde chambre mise à jour avec succès" });
     } catch (error) {
       console.error(error);
       return res.status(500).json({
@@ -74,6 +82,12 @@ class TypeChambreController {
   static async supprimerTypeChambre(req, res) {
     const { id } = req.params;
     try {
+      const type = await prisma.typeChambre.findUnique({
+        where: { id: parseInt(id) }
+      });
+      if (!type) {
+        return res.status(404).json({ message: "Type de chambre non trouvé" });
+      }
       await prisma.typeChambre.delete({
         where: { id: parseInt(id) }
       });

@@ -8,7 +8,6 @@ class UtilisateurController {
     try {
       const { nom, email, role, motDePasse } = req.body;
 
-      // Vérifier si l'utilisateur existe déjà
       const utilisateurExistant = await prisma.utilisateur.findUnique({
         where: { email }
       });
@@ -17,10 +16,8 @@ class UtilisateurController {
         return res.status(400).json({ message: "Cet email est déjà utilisé" });
       }
 
-      // Hash du mot de passe avant de le sauvegarder
       const hashedPassword = await bcrypt.hash(motDePasse, 10);
 
-      // Créer un nouvel utilisateur dans la base de données
       const nouvelUtilisateur = await prisma.utilisateur.create({
         data: {
           nom,
@@ -30,7 +27,9 @@ class UtilisateurController {
         }
       });
 
-      res.status(201).json({ message: "Utilisateur ajoutée avec succès" });
+      return res
+        .status(201)
+        .json({ message: "Utilisateur ajoutée avec succès" });
     } catch (error) {
       console.error(error);
       res.status(500).json({
@@ -46,7 +45,7 @@ class UtilisateurController {
       res.status(200).json(utilisateurs);
     } catch (error) {
       console.error(error);
-      res.status(500).json({
+      return res.status(500).json({
         message: "Erreur lors de la récupération des utilisateurs",
         error
       });
@@ -67,7 +66,7 @@ class UtilisateurController {
       res.status(200).json(utilisateur);
     } catch (error) {
       console.error(error);
-      res.status(500).json({
+      return res.status(500).json({
         message: "Erreur lors de la récupération de l'utilisateur",
         error
       });
@@ -87,6 +86,14 @@ class UtilisateurController {
         return res.status(404).json({ message: "Utilisateur non trouvé" });
       }
 
+      const utilisateurExistant = await prisma.utilisateur.findUnique({
+        where: { email }
+      });
+
+      if (utilisateurExistant) {
+        return res.status(400).json({ message: "Cet email est déjà utilisé" });
+      }
+
       const dataToUpdate = {
         nom,
         email,
@@ -102,7 +109,7 @@ class UtilisateurController {
         data: dataToUpdate
       });
 
-      res.json({ message: "Utilisateur mise à jour avec succès" });
+      return res.json({ message: "Utilisateur mise à jour avec succès" });
     } catch (error) {
       console.error(error);
       res.status(500).json({
@@ -127,7 +134,7 @@ class UtilisateurController {
         where: { id: parseInt(id) }
       });
 
-      res.json({ message: "Utilisateur supprimer avec sucess" });
+      return res.json({ message: "Utilisateur supprimer avec sucess" });
     } catch (error) {
       console.error(error);
       res.status(500).json({

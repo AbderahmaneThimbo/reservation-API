@@ -7,6 +7,23 @@ class ClientController {
     try {
       const { nom, prenom, telephone, utilisateurId } = req.body;
 
+      const telephoneExistant = await prisma.client.findUnique({
+        where: { telephone }
+      });
+
+      if (telephoneExistant) {
+        return res
+          .status(400)
+          .json({ message: "Le numéro du telephone est déjà utilisé" });
+      }
+
+      const utilisateurExiste = await prisma.utilisateur.findUnique({
+        where: { id: utilisateurId }
+      });
+      if (!utilisateurExiste) {
+        return res.status(404).json({ message: "L'utilisateur n'existe pas" });
+      }
+
       const nouveauClient = await prisma.client.create({
         data: {
           nom,
@@ -16,10 +33,10 @@ class ClientController {
         }
       });
 
-      res.status(201).json({ message: "Client ajoutée avec succès" });
+      return res.status(201).json({ message: "Client ajoutée avec succès" });
     } catch (error) {
       console.error(error);
-      res
+      return res
         .status(500)
         .json({ message: "Erreur lors de la création du client", error });
     }
@@ -34,10 +51,10 @@ class ClientController {
         }
       });
 
-      res.status(200).json(clients);
+      return res.status(200).json(clients);
     } catch (error) {
       console.error(error);
-      res
+      return res
         .status(500)
         .json({ message: "Erreur lors de la récupération des clients", error });
     }
@@ -58,10 +75,10 @@ class ClientController {
         return res.status(404).json({ message: "Client non trouvé" });
       }
 
-      res.status(200).json(client);
+      return res.status(200).json(client);
     } catch (error) {
       console.error(error);
-      res
+      return res
         .status(500)
         .json({ message: "Erreur lors de la récupération du client", error });
     }
@@ -69,7 +86,7 @@ class ClientController {
 
   static async mettreAJourClient(req, res) {
     const { id } = req.params;
-    const { nom, prenom, telephone } = req.body;
+    const { nom, prenom, telephone, utilisateurId } = req.body;
     try {
       const clientExistant = await prisma.client.findUnique({
         where: { id: parseInt(id) }
@@ -79,15 +96,32 @@ class ClientController {
         return res.status(404).json({ message: "Client non trouvé" });
       }
 
-      const clientMisAJour = await prisma.client.update({
-        where: { id: parseInt(id) },
-        data: { nom, prenom, telephone }
+      const telephoneExistant = await prisma.client.findUnique({
+        where: { telephone }
       });
 
-      res.json({ message: "Client mise à jour avec succès" });
+      if (telephoneExistant) {
+        return res
+          .status(400)
+          .json({ message: "Le numéro du telephone est déjà utilisé" });
+      }
+
+      const utilisateurExiste = await prisma.utilisateur.findUnique({
+        where: { id: utilisateurId }
+      });
+      if (!utilisateurExiste) {
+        return res.status(404).json({ message: "L'utilisateur n'existe pas" });
+      }
+
+      const clientMisAJour = await prisma.client.update({
+        where: { id: parseInt(id) },
+        data: { nom, prenom, telephone, utilisateurId }
+      });
+
+      return res.json({ message: "Client mise à jour avec succès" });
     } catch (error) {
       console.error(error);
-      res
+      return res
         .status(500)
         .json({ message: "Erreur lors de la mise à jour du client", error });
     }
@@ -96,6 +130,14 @@ class ClientController {
   static async supprimerClient(req, res) {
     const { id } = req.params;
     try {
+      const client = await prisma.client.findUnique({
+        where: { id: parseInt(id) }
+      });
+
+      if (!client) {
+        return res.status(404).json({ message: "Client non trouvé" });
+      }
+
       await prisma.client.delete({
         where: { id: parseInt(id) }
       });
