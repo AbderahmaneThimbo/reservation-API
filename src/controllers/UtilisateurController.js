@@ -1,75 +1,51 @@
 import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import UtilisateurService from "../services/UtilisateurService.js";
 
 class UtilisateurController {
   static async creerUtilisateur(req, res) {
     try {
       const { nom, email, role, motDePasse } = req.body;
-
-      const utilisateurExistant = await prisma.utilisateur.findUnique({
-        where: { email }
-      });
-
-      if (utilisateurExistant) {
-        return res.status(400).json({ message: "Cet email est déjà utilisé" });
-      }
-
       const hashedPassword = await bcrypt.hash(motDePasse, 10);
 
-      const nouvelUtilisateur = await prisma.utilisateur.create({
-        data: {
-          nom,
-          email,
-          role,
-          motDePasse: hashedPassword
-        }
+      const nouvelUtilisateur = await UtilisateurService.creerUtilisateur({
+        nom,
+        email,
+        role,
+        motDePasse: hashedPassword
       });
 
       return res
         .status(201)
-        .json({ message: "Utilisateur ajoutée avec succès" });
+        .json({
+          message: "Utilisateur ajouté avec succès",
+          utilisateur: nouvelUtilisateur
+        });
     } catch (error) {
       console.error(error);
-      res.status(500).json({
-        message: "Erreur lors de la création de l'utilisateur",
-        error
-      });
+      return res.status(400).json({ message: error.message });
     }
   }
 
   static async getUtilisateurs(req, res) {
     try {
-      const utilisateurs = await prisma.utilisateur.findMany();
-      res.status(200).json(utilisateurs);
+      const utilisateurs = await UtilisateurService.getUtilisateurs();
+      return res.status(200).json(utilisateurs);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({
-        message: "Erreur lors de la récupération des utilisateurs",
-        error
-      });
+      return res
+        .status(500)
+        .json({ message: "Erreur lors de la récupération des utilisateurs" });
     }
   }
 
   static async getUtilisateurById(req, res) {
     const { id } = req.params;
     try {
-      const utilisateur = await prisma.utilisateur.findUnique({
-        where: { id: parseInt(id) }
-      });
-
-      if (!utilisateur) {
-        return res.status(404).json({ message: "Utilisateur non trouvé" });
-      }
-
-      res.status(200).json(utilisateur);
+      const utilisateur = await UtilisateurService.getUtilisateurById(id);
+      return res.status(200).json(utilisateur);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({
-        message: "Erreur lors de la récupération de l'utilisateur",
-        error
-      });
+      return res.status(404).json({ message: error.message });
     }
   }
 
@@ -78,69 +54,42 @@ class UtilisateurController {
     const { nom, email, role, motDePasse } = req.body;
 
     try {
-      const utilisateur = await prisma.utilisateur.findUnique({
-        where: { id: parseInt(id) }
-      });
-
-      if (!utilisateur) {
-        return res.status(404).json({ message: "Utilisateur non trouvé" });
-      }
-
-      const utilisateurExistant = await prisma.utilisateur.findUnique({
-        where: { email }
-      });
-
-      if (utilisateurExistant) {
-        return res.status(400).json({ message: "Cet email est déjà utilisé" });
-      }
-
       const dataToUpdate = {
         nom,
         email,
-        role
+        role: role === "ADMIN" ? "ADMIN" : "UTILISATEUR"
       };
 
       if (motDePasse) {
         dataToUpdate.motDePasse = await bcrypt.hash(motDePasse, 10);
       }
 
-      const utilisateurMisAJour = await prisma.utilisateur.update({
-        where: { id: parseInt(id) },
-        data: dataToUpdate
-      });
-
-      return res.json({ message: "Utilisateur mise à jour avec succès" });
+      const utilisateurMisAJour = await UtilisateurService.updateUtilisateur(
+        id,
+        dataToUpdate
+      );
+      return res
+        .status(200)
+        .json({
+          message: "Utilisateur mis à jour avec succès",
+          utilisateur: utilisateurMisAJour
+        });
     } catch (error) {
       console.error(error);
-      res.status(500).json({
-        message: "Erreur lors de la mise à jour de l'utilisateur",
-        error
-      });
+      return res.status(400).json({ message: error.message });
     }
   }
 
   static async supprimerUtilisateur(req, res) {
     const { id } = req.params;
     try {
-      const utilisateur = await prisma.utilisateur.findUnique({
-        where: { id: parseInt(id) }
-      });
-
-      if (!utilisateur) {
-        return res.status(404).json({ message: "Utilisateur non trouvé" });
-      }
-
-      await prisma.utilisateur.delete({
-        where: { id: parseInt(id) }
-      });
-
-      return res.json({ message: "Utilisateur supprimer avec sucess" });
+      await UtilisateurService.supprimerUtilisateur(id);
+      return res
+        .status(200)
+        .json({ message: "Utilisateur supprimé avec succès" });
     } catch (error) {
       console.error(error);
-      res.status(500).json({
-        message: "Erreur lors de la suppression de l'utilisateur",
-        error
-      });
+      return res.status(400).json({ message: error.message });
     }
   }
 }

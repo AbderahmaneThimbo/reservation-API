@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import ReservationService from "../services/reservationService.js";
 
 export class ReservationController {
   static async creerReservation(req, res) {
@@ -13,35 +11,29 @@ export class ReservationController {
         utilisateurId
       } = req.body;
 
-      const chambreExiste = await prisma.chambre.findUnique({
-        where: { id: chambreId }
-      });
+      const chambreExiste = await ReservationService.chambreExiste(chambreId);
       if (!chambreExiste) {
         return res.status(404).json({ message: "La chambre n'existe pas" });
       }
 
-      const clientExiste = await prisma.client.findUnique({
-        where: { id: clientId }
-      });
+      const clientExiste = await ReservationService.clientExiste(clientId);
       if (!clientExiste) {
         return res.status(404).json({ message: "Le client n'existe pas" });
       }
 
-      const utilisateurExiste = await prisma.utilisateur.findUnique({
-        where: { id: utilisateurId }
-      });
+      const utilisateurExiste = await ReservationService.utilisateurExiste(
+        utilisateurId
+      );
       if (!utilisateurExiste) {
         return res.status(404).json({ message: "L'utilisateur n'existe pas" });
       }
 
-      const nouvelleReservation = await prisma.reservation.create({
-        data: {
-          dateDebut: new Date(dateDebut),
-          dateFin: new Date(dateFin),
-          chambreId,
-          clientId,
-          utilisateurId
-        }
+      const nouvelleReservation = await ReservationService.creerReservation({
+        dateDebut: new Date(dateDebut),
+        dateFin: new Date(dateFin),
+        chambreId,
+        clientId,
+        utilisateurId
       });
 
       res.status(201).json({ message: "Réservation ajoutée avec succès" });
@@ -56,13 +48,7 @@ export class ReservationController {
 
   static async getReservations(req, res) {
     try {
-      const reservations = await prisma.reservation.findMany({
-        include: {
-          chambre: true,
-          client: true,
-          utilisateur: true
-        }
-      });
+      const reservations = await ReservationService.getAllReservations();
       res.status(200).json(reservations);
     } catch (error) {
       console.error(error);
@@ -76,19 +62,10 @@ export class ReservationController {
   static async getReservationById(req, res) {
     const { id } = req.params;
     try {
-      const reservation = await prisma.reservation.findUnique({
-        where: { id: parseInt(id) },
-        include: {
-          chambre: true,
-          client: true,
-          utilisateur: true
-        }
-      });
-
+      const reservation = await ReservationService.getReservationById(id);
       if (!reservation) {
         return res.status(404).json({ message: "Réservation non trouvée" });
       }
-
       res.status(200).json(reservation);
     } catch (error) {
       console.error(error);
@@ -104,45 +81,39 @@ export class ReservationController {
     const { dateDebut, dateFin, chambreId, clientId, utilisateurId } = req.body;
 
     try {
-      const reservationExiste = await prisma.reservation.findUnique({
-        where: { id: parseInt(id) }
-      });
-
+      const reservationExiste = await ReservationService.getReservationById(id);
       if (!reservationExiste) {
         return res.status(404).json({ message: "Réservation non trouvée" });
       }
 
-      const chambreExiste = await prisma.chambre.findUnique({
-        where: { id: chambreId }
-      });
+      // Vérification de l'existence des entités liées
+      const chambreExiste = await ReservationService.chambreExiste(chambreId);
       if (!chambreExiste) {
         return res.status(404).json({ message: "La chambre n'existe pas" });
       }
 
-      const clientExiste = await prisma.client.findUnique({
-        where: { id: clientId }
-      });
+      const clientExiste = await ReservationService.clientExiste(clientId);
       if (!clientExiste) {
         return res.status(404).json({ message: "Le client n'existe pas" });
       }
 
-      const utilisateurExiste = await prisma.utilisateur.findUnique({
-        where: { id: utilisateurId }
-      });
+      const utilisateurExiste = await ReservationService.utilisateurExiste(
+        utilisateurId
+      );
       if (!utilisateurExiste) {
         return res.status(404).json({ message: "L'utilisateur n'existe pas" });
       }
 
-      const reservationMiseAJour = await prisma.reservation.update({
-        where: { id: parseInt(id) },
-        data: {
+      const reservationMiseAJour = await ReservationService.updateReservation(
+        id,
+        {
           dateDebut: new Date(dateDebut),
           dateFin: new Date(dateFin),
           chambreId,
           clientId,
           utilisateurId
         }
-      });
+      );
 
       res.json({ message: "Réservation mise à jour avec succès" });
     } catch (error) {
@@ -157,19 +128,14 @@ export class ReservationController {
   static async supprimerReservation(req, res) {
     const { id } = req.params;
     try {
-      const reservation = await prisma.reservation.findUnique({
-        where: { id: parseInt(id) }
-      });
-
+      const reservation = await ReservationService.getReservationById(id);
       if (!reservation) {
         return res.status(404).json({ message: "Réservation non trouvée" });
       }
 
-      await prisma.reservation.delete({
-        where: { id: parseInt(id) }
-      });
+      await ReservationService.deleteReservation(id);
 
-      res.json({ message: "Réservation supprimer avec sucess" });
+      res.json({ message: "Réservation supprimée avec succès" });
     } catch (error) {
       console.error(error);
       res.status(500).json({

@@ -1,17 +1,11 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import TypeChambreService from "../services/typeChambreService.js";
 
 class TypeChambreController {
   static async creerTypeChambre(req, res) {
     try {
       const { type } = req.body;
-      const nouveauTypeChambre = await prisma.typeChambre.create({
-        data: {
-          type
-        }
-      });
-      res.status(201).json({ message: "Type de chambre ajoutée avec succès" });
+      await TypeChambreService.creerTypeChambre(type);
+      res.status(201).json({ message: "Type de chambre ajouté avec succès" });
     } catch (error) {
       console.error(error);
       return res.status(500).json({
@@ -23,7 +17,7 @@ class TypeChambreController {
 
   static async getTypeChambres(req, res) {
     try {
-      const typesChambres = await prisma.typeChambre.findMany();
+      const typesChambres = await TypeChambreService.getAllTypeChambres();
       return res.status(200).json(typesChambres);
     } catch (error) {
       console.error(error);
@@ -37,14 +31,10 @@ class TypeChambreController {
   static async getTypeChambreById(req, res) {
     const { id } = req.params;
     try {
-      const typeChambre = await prisma.typeChambre.findUnique({
-        where: { id: parseInt(id) }
-      });
-
+      const typeChambre = await TypeChambreService.getTypeChambreById(id);
       if (!typeChambre) {
         return res.status(404).json({ message: "Type de chambre non trouvé" });
       }
-
       return res.status(200).json(typeChambre);
     } catch (error) {
       console.error(error);
@@ -59,17 +49,12 @@ class TypeChambreController {
     const { id } = req.params;
     const { type } = req.body;
     try {
-      const typeExistant = await prisma.typeChambre.findUnique({
-        where: { id: parseInt(id) }
-      });
+      const typeExistant = await TypeChambreService.getTypeChambreById(id);
       if (!typeExistant) {
         return res.status(404).json({ message: "Type de chambre non trouvé" });
       }
-      const typeChambreMisAJour = await prisma.typeChambre.update({
-        where: { id: parseInt(id) },
-        data: { type }
-      });
-      return res.json({ message: "Type dde chambre mise à jour avec succès" });
+      await TypeChambreService.updateTypeChambre(id, type);
+      return res.json({ message: "Type de chambre mis à jour avec succès" });
     } catch (error) {
       console.error(error);
       return res.status(500).json({
@@ -82,16 +67,12 @@ class TypeChambreController {
   static async supprimerTypeChambre(req, res) {
     const { id } = req.params;
     try {
-      const type = await prisma.typeChambre.findUnique({
-        where: { id: parseInt(id) }
-      });
+      const type = await TypeChambreService.getTypeChambreById(id);
       if (!type) {
         return res.status(404).json({ message: "Type de chambre non trouvé" });
       }
-      await prisma.typeChambre.delete({
-        where: { id: parseInt(id) }
-      });
-      res.json({ message: "Type de chambre supprimer avec sucess" });
+      await TypeChambreService.deleteTypeChambre(id);
+      return res.json({ message: "Type de chambre supprimé avec succès" });
     } catch (error) {
       console.error(error);
       return res.status(500).json({

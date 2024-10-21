@@ -7,17 +7,22 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Role {
+  ADMIN
+  UTILISATEUR
+}
+
 model Utilisateur {
   id           Int      @id @default(autoincrement())
   nom          String
   email        String   @unique
-  role         String
+  role         Role     @default(UTILISATEUR) 
   motDePasse   String
   clients      Client[]
   chambres     Chambre[]
   reservations Reservation[]
 
-  @@map("utilisateurs")  
+  @@map("utilisateurs")
 }
 
 model Client {
@@ -36,6 +41,7 @@ model TypeChambre {
   id      Int      @id @default(autoincrement())
   type    String
   chambres Chambre[]
+  
   @@map("typeChambres")
 }
 

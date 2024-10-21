@@ -9,11 +9,30 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.utilisateur = decoded;
+    req.utilisateur = decoded; 
     next();
   } catch (error) {
     return res.status(400).json({ message: 'Token invalide.' });
   }
 };
 
-export default authMiddleware;
+
+const adminMiddleware = (req, res, next) => {
+  if (req.utilisateur.role !== 'admin') {
+    return res.status(403).json({ message: 'Accès interdit. Administrateurs uniquement.' });
+  }
+  next();
+};
+
+
+const utilisateurMiddleware = (req, res, next) => {
+  const { role } = req.utilisateur;
+
+  if (role === 'utilisateur' || role === 'admin') {
+    return next();
+  }
+
+  return res.status(403).json({ message: 'Accès interdit. Utilisateurs ou administrateurs uniquement.' });
+};
+
+export { authMiddleware, adminMiddleware, utilisateurMiddleware };
