@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jasmine",
     "start": " nodemon index.js"
   },
   "author": "AbderahmaneThimbo",
@@ -19,6 +19,10 @@
     "express": "^4.21.1",
     "express-validator": "^7.2.0",
     "http-status-codes": "^2.3.0",
+    "i18next": "^23.16.3",
+    "i18next-express-middleware": "^2.0.0",
+    "i18next-fs-backend": "^2.3.2",
+    "jasmine": "^5.4.0",
     "jasmine-spec-reporter": "^7.0.0",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.15",

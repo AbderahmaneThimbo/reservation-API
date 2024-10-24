@@ -6,7 +6,7 @@ import prisma from "../config/prisma.js";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  const { email, motDePasse } = req.body;
+  const { email, password } = req.body;
 
   try {
     const utilisateur = await prisma.utilisateur.findUnique({
@@ -17,11 +17,8 @@ router.post("/", async (req, res) => {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
 
-    const motDePasseValide = await bcrypt.compare(
-      motDePasse,
-      utilisateur.motDePasse
-    );
-    if (!motDePasseValide) {
+    const passwordValide = await bcrypt.compare(password, utilisateur.password);
+    if (!passwordValide) {
       return res.status(401).json({ message: "Mot de passe incorrect" });
     }
 

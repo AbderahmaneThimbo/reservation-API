@@ -9,17 +9,18 @@ generator client {
 
 enum Role {
   ADMIN
-  UTILISATEUR
+  GESTIONNAIRE
 }
 
 model Utilisateur {
   id           Int      @id @default(autoincrement())
   nom          String
   email        String   @unique
-  role         Role     @default(UTILISATEUR) 
-  motDePasse   String
+  role         Role     @default(GESTIONNAIRE) 
+  password     String
   clients      Client[]
   chambres     Chambre[]
+  typeChambres TypeChambre[]
   reservations Reservation[]
 
   @@map("utilisateurs")
@@ -30,17 +31,19 @@ model Client {
   nom           String
   prenom        String
   telephone     String   @unique
-  utilisateurId Int
-  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  utilisateurId Int?     
+  utilisateur   Utilisateur? @relation(fields: [utilisateurId], references: [id], onDelete: Cascade) 
   reservations  Reservation[]
 
   @@map("clients")
 }
 
 model TypeChambre {
-  id      Int      @id @default(autoincrement())
-  type    String
-  chambres Chambre[]
+  id            Int      @id @default(autoincrement())
+  nom           String   @unique
+  utilisateurId Int?     
+  utilisateur   Utilisateur? @relation(fields: [utilisateurId], references: [id], onDelete: Cascade) 
+  chambres      Chambre[]
   
   @@map("typeChambres")
 }
@@ -51,8 +54,8 @@ model Chambre {
   prix          Float
   typeId        Int
   type          TypeChambre @relation(fields: [typeId], references: [id])
-  utilisateurId Int
-  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  utilisateurId Int?     
+  utilisateur   Utilisateur? @relation(fields: [utilisateurId], references: [id], onDelete: Cascade) 
   reservations  Reservation[]
 
   @@map("chambres")
@@ -66,8 +69,8 @@ model Reservation {
   chambre       Chambre @relation(fields: [chambreId], references: [id])
   clientId      Int
   client        Client @relation(fields: [clientId], references: [id])
-  utilisateurId Int
-  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id])
+  utilisateurId Int?     
+  utilisateur   Utilisateur? @relation(fields: [utilisateurId], references: [id]) 
 
   @@map("reservations")
 }

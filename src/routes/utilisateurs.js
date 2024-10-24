@@ -1,12 +1,52 @@
 import express from "express";
-import UtilisateurController from "../controllers/UtilisateurController.js";
+import {
+  creerUtilisateur,
+  afficherUtilisateurParId,
+  afficherUtilisateurs,
+  supprimerUtilisateur,
+  mettreAjourUtilisateur
+} from "../controllers/UtilisateurController.js";
+import { authMiddleware, adminMiddleware } from "../middlewares/auth.js";
+import {
+  creerUtilisateurValidator,
+  mettreAjourUtilisateurValidator,
+  supprimerUtilisateurValidator
+} from "../validators/UtilisateurValidator.js";
 
 const router = express.Router();
 
-router.post("/utilisateurs", UtilisateurController.creerUtilisateur);
-router.get("/utilisateurs", UtilisateurController.getUtilisateurs);
-router.get("/utilisateurs/:id", UtilisateurController.getUtilisateurById);
-router.put("/utilisateurs/:id", UtilisateurController.updateUtilisateur);
-router.delete("/utilisateurs/:id", UtilisateurController.supprimerUtilisateur);
+router.post(
+  "/utilisateurs",
+  authMiddleware,
+  adminMiddleware,
+  creerUtilisateurValidator,
+  creerUtilisateur
+);
+router.get(
+  "/utilisateurs",
+  authMiddleware,
+  adminMiddleware,
+  afficherUtilisateurs
+);
+router.get(
+  "/utilisateurs/:id",
+  authMiddleware,
+  adminMiddleware,
+  afficherUtilisateurParId
+);
+router.put(
+  "/utilisateurs/:id",
+  authMiddleware,
+  adminMiddleware,
+  mettreAjourUtilisateurValidator,
+  mettreAjourUtilisateur
+);
+router.delete(
+  "/utilisateurs/:id",
+  authMiddleware,
+  adminMiddleware,
+  supprimerUtilisateurValidator,
+  supprimerUtilisateur
+);
 
 export default router;
