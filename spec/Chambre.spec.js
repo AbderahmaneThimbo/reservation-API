@@ -8,7 +8,7 @@ describe("Chambre tests", () => {
 
   beforeAll(() => {
     spyOn(prisma.typeChambre, "create").and.callFake(async data => {
-      return { id: 1, nom: data.data.nom };
+      return { typeId: typeId, nom: data.data.nom };
     });
     spyOn(prisma.typeChambre, "delete").and.callFake(async data => {
       if (data.where.id === 1) {
@@ -57,7 +57,7 @@ describe("Chambre tests", () => {
     const chambre = {
       numeroChambre: 1,
       prix: 150.5,
-      typeId: 1
+      typeId: typeId
     };
 
     const result = await prisma.chambre.create({
@@ -75,7 +75,7 @@ describe("Chambre tests", () => {
     const updatedChambre = {
       numeroChambre: 502,
       prix: 200.75,
-      typeId: 1
+      typeId: typeId
     };
 
     const result = await prisma.chambre.update({

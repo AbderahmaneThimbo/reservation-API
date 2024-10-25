@@ -11,9 +11,7 @@ export const creerClient = async (req, res) => {
     });
 
     if (telephoneExistant) {
-      return res
-        .status(400)
-        .json({ message: "Le numéro de téléphone est déjà utilisé" });
+      return res.status(400).json({ message: req.t("client.telephoneUsed") });
     }
 
     await prisma.client.create({
@@ -25,12 +23,12 @@ export const creerClient = async (req, res) => {
       }
     });
 
-    return res.status(201).json({ message: "Client ajouté avec succès" });
+    return res.status(201).json({ message: req.t("client.addSuccess") });
   } catch (error) {
     console.error(error);
     return res
       .status(500)
-      .json({ message: "Erreur lors de la création du client", error });
+      .json({ message: req.t("client.createError"), error });
   }
 };
 
@@ -45,9 +43,7 @@ export const afficherClients = async (req, res) => {
     return res.status(200).json(clients);
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Erreur lors de la récupération des clients", error });
+    return res.status(500).json({ message: req.t("client.fetchError"), error });
   }
 };
 
@@ -63,15 +59,13 @@ export const afficherClientParId = async (req, res) => {
     });
 
     if (!client) {
-      return res.status(404).json({ message: "Client non trouvé" });
+      return res.status(404).json({ message: req.t("client.notFound") });
     }
 
     return res.status(200).json(client);
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Erreur lors de la récupération du client", error });
+    return res.status(500).json({ message: req.t("client.fetchError"), error });
   }
 };
 
@@ -86,7 +80,7 @@ export const mettreAJourClient = async (req, res) => {
     });
 
     if (!clientExistant) {
-      return res.status(404).json({ message: "Client non trouvé" });
+      return res.status(404).json({ message: req.t("client.notFound") });
     }
 
     const telephoneExistant = await prisma.client.findUnique({
@@ -94,9 +88,7 @@ export const mettreAJourClient = async (req, res) => {
     });
 
     if (telephoneExistant && telephoneExistant.id !== parseInt(id)) {
-      return res
-        .status(400)
-        .json({ message: "Le numéro de téléphone est déjà utilisé" });
+      return res.status(400).json({ message: req.t("client.telephoneUsed") });
     }
 
     await prisma.client.update({
@@ -109,12 +101,12 @@ export const mettreAJourClient = async (req, res) => {
       }
     });
 
-    return res.json({ message: "Client mis à jour avec succès" });
+    return res.json({ message: req.t("client.updateSuccess") });
   } catch (error) {
     console.error(error);
     return res
       .status(500)
-      .json({ message: "Erreur lors de la mise à jour du client", error });
+      .json({ message: req.t("client.updateError"), error });
   }
 };
 
@@ -127,7 +119,7 @@ export const supprimerClient = async (req, res) => {
     });
 
     if (!client) {
-      return res.status(404).json({ message: "Client non trouvé" });
+      return res.status(404).json({ message: req.t("client.notFound") });
     }
 
     const clientReservation = await prisma.reservation.findFirst({
@@ -135,17 +127,17 @@ export const supprimerClient = async (req, res) => {
     });
 
     if (clientReservation) {
-      return res.status(400).json({ message: "Ce client à une réservation" });
+      return res.status(400).json({ message: req.t("client.hasReservation") });
     }
     await prisma.client.delete({
       where: { id: parseInt(id) }
     });
 
-    return res.json({ message: "Client supprimé avec succès" });
+    return res.json({ message: req.t("client.deleteSuccess") });
   } catch (error) {
     console.error(error);
     return res
       .status(500)
-      .json({ message: "Erreur lors de la suppression du client", error });
+      .json({ message: req.t("client.deleteError"), error });
   }
 };

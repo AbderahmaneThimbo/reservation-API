@@ -6,11 +6,11 @@ describe("Reservation tests", () => {
   let reservationId = 1;
   let chambreId = 1;
   let clientId = 1;
-  let typeChambreId = 1;
+  let typeId = 1;
 
   beforeAll(() => {
     spyOn(prisma.typeChambre, "create").and.returnValue(
-      Promise.resolve({ id: typeChambreId, nom: "Suite Deluxe" })
+      Promise.resolve({ id: typeId, nom: "Suite Deluxe" })
     );
     spyOn(prisma.client, "create").and.returnValue(
       Promise.resolve({
@@ -21,7 +21,12 @@ describe("Reservation tests", () => {
       })
     );
     spyOn(prisma.chambre, "create").and.returnValue(
-      Promise.resolve({ id: chambreId, numeroChambre: 101, prix: 200.75 })
+      Promise.resolve({
+        id: chambreId,
+        typeId: typeId,
+        numeroChambre: 101,
+        prix: 200.75
+      })
     );
     spyOn(prisma.reservation, "create").and.returnValue(
       Promise.resolve({

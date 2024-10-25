@@ -12,7 +12,7 @@ export const creerChambre = async (req, res) => {
     if (chambreExistant) {
       return res
         .status(400)
-        .json({ message: "Le numéro de chambre est déjà utilisé" });
+        .json({ message: req.t("chambre.numeroChambreExistant") });
     }
 
     const typeExiste = await prisma.typeChambre.findUnique({
@@ -22,7 +22,7 @@ export const creerChambre = async (req, res) => {
     if (!typeExiste) {
       return res
         .status(404)
-        .json({ message: "Le type de chambre n'existe pas" });
+        .json({ message: req.t("chambre.typeChambreNonExistant") });
     }
 
     await prisma.chambre.create({
@@ -34,11 +34,11 @@ export const creerChambre = async (req, res) => {
       }
     });
 
-    return res.status(201).json({ message: "Chambre ajoutée avec succès" });
+    return res.status(201).json({ message: req.t("chambre.chambreAjoutee") });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Erreur lors de la création de la chambre",
+      message: req.t("chambre.erreurCreationChambre"),
       error
     });
   }
@@ -51,7 +51,7 @@ export const afficherChambres = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Erreur lors de la récupération des chambres",
+      message: req.t("chambre.erreurRecuperationChambres"),
       error
     });
   }
@@ -64,13 +64,15 @@ export const afficherChambreParId = async (req, res) => {
       where: { id: parseInt(id) }
     });
     if (!chambre) {
-      return res.status(404).json({ message: "Chambre non trouvée" });
+      return res
+        .status(404)
+        .json({ message: req.t("chambre.chambreNonTrouvee") });
     }
     return res.status(200).json(chambre);
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Erreur lors de la récupération de la chambre",
+      message: req.t("chambre.erreurRecuperationChambre"),
       error
     });
   }
@@ -85,7 +87,9 @@ export const mettreAJourChambre = async (req, res) => {
       where: { id: parseInt(id) }
     });
     if (!chambre) {
-      return res.status(404).json({ message: "Chambre non trouvée" });
+      return res
+        .status(404)
+        .json({ message: req.t("chambre.chambreNonTrouvee") });
     }
 
     if (numeroChambre && numeroChambre !== chambre.numeroChambre) {
@@ -93,7 +97,9 @@ export const mettreAJourChambre = async (req, res) => {
         where: { numeroChambre }
       });
       if (chambreExistant) {
-        return res.status(400).json({ message: "Ce numéro est déjà utilisé" });
+        return res
+          .status(400)
+          .json({ message: req.t("chambre.numeroChambreExistant") });
       }
     }
 
@@ -103,7 +109,7 @@ export const mettreAJourChambre = async (req, res) => {
     if (!typeExiste) {
       return res
         .status(404)
-        .json({ message: "Le type de chambre n'existe pas" });
+        .json({ message: req.t("chambre.typeChambreNonExistant") });
     }
 
     await prisma.chambre.update({
@@ -116,11 +122,11 @@ export const mettreAJourChambre = async (req, res) => {
       }
     });
 
-    return res.json({ message: "Chambre mise à jour avec succès" });
+    return res.json({ message: req.t("chambre.chambreMiseAJour") });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Erreur lors de la mise à jour de la chambre",
+      message: req.t("chambre.erreurMiseAJourChambre"),
       error
     });
   }
@@ -133,28 +139,30 @@ export const supprimerChambre = async (req, res) => {
       where: { id: parseInt(id) }
     });
     if (!chambre) {
-      return res.status(404).json({ message: "Chambre non trouvée" });
+      return res
+        .status(404)
+        .json({ message: req.t("chambre.chambreNonTrouvee") });
     }
 
-    const chambreReservtion = await prisma.reservation.findFirst({
+    const chambreReservation = await prisma.reservation.findFirst({
       where: { chambreId: parseInt(id) }
     });
 
-    if (chambreReservtion) {
+    if (chambreReservation) {
       return res
         .status(400)
-        .json({ message: "Cette chambre à une réservation" });
+        .json({ message: req.t("chambre.chambreAvecReservation") });
     }
 
     await prisma.chambre.delete({
       where: { id: parseInt(id) }
     });
 
-    return res.json({ message: "Chambre supprimée avec succès" });
+    return res.json({ message: req.t("chambre.chambreSupprimee") });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Erreur lors de la suppression de la chambre",
+      message: req.t("chambre.erreurSuppressionChambre"),
       error
     });
   }

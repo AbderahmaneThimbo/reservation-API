@@ -1,0 +1,146 @@
+{
+  "user": {
+    "emailAlreadyUsed": "البريد الإلكتروني هذا مستخدم بالفعل",
+    "createdSuccessfully": "تم إنشاء المستخدم بنجاح",
+    "updatedSuccessfully": "تم تحديث المستخدم بنجاح",
+    "deletedSuccessfully": "تم حذف المستخدم بنجاح",
+    "notFound": "المستخدم غير موجود"
+  },
+  "error": {
+    "generalError": "حدث خطأ",
+    "fetchUsersError": "خطأ في جلب المستخدمين"
+  },
+  "validator": {
+    "nom": {
+      "required": "الاسم مطلوب.",
+      "invalid": "يجب أن يحتوي الاسم على أحرف ورموز مسموح بها فقط.",
+      "minLength": "يجب أن يحتوي الاسم على 3 أحرف على الأقل."
+    },
+    "email": {
+      "required": "البريد الإلكتروني مطلوب.",
+      "invalid": "يجب أن يكون البريد الإلكتروني صالحًا.",
+      "alreadyUsed": "هذا البريد الإلكتروني مستخدم بالفعل."
+    },
+    "password": {
+      "required": "كلمة المرور مطلوبة.",
+      "minLength": "يجب أن تحتوي كلمة المرور على 4 أحرف على الأقل."
+    },
+    "role": {
+      "required": "الدور مطلوب.",
+      "invalid": "يجب أن يكون الدور ADMIN أو GESTIONNAIRE."
+    },
+    "id": {
+      "required": "الرقم التعريفي مطلوب."
+    },
+    "user": {
+      "notFound": "المستخدم غير موجود."
+    }
+  },
+
+  "typeChambre": {
+    "nameAlreadyExists": "اسم نوع الغرفة موجود بالفعل.",
+    "addedSuccessfully": "تم إضافة نوع الغرفة بنجاح.",
+    "notFound": "نوع الغرفة غير موجود.",
+    "updatedSuccessfully": "تم تحديث نوع الغرفة بنجاح.",
+    "deletedSuccessfully": "تم حذف نوع الغرفة بنجاح.",
+    "typeInUse": "هذا النوع مستخدم بواسطة غرفة."
+  },
+  "error": {
+    "creationTypeChambreError": "حدث خطأ أثناء إنشاء نوع الغرفة.",
+    "fetchingTypesChambresError": "حدث خطأ أثناء استرجاع أنواع الغرف.",
+    "fetchingTypeChambreError": "حدث خطأ أثناء استرجاع نوع الغرفة.",
+    "updatingTypeChambreError": "حدث خطأ أثناء تحديث نوع الغرفة.",
+    "deletingTypeChambreError": "حدث خطأ أثناء حذف نوع الغرفة."
+  },
+  "validator": {
+    "nomRequired": "اسم نوع الغرفة مطلوب.",
+    "maxLength": "لا يمكن أن يتجاوز الاسم 50 حرفًا.",
+    "idRequired": "معرّف نوع الغرفة مطلوب.",
+    "notFound": "نوع الغرفة غير موجود.",
+    "invalidName": "يحتوي الاسم على أحرف غير صالحة."
+  },
+
+  "client": {
+    "telephoneUsed": "رقم الهاتف مستخدم بالفعل",
+    "addSuccess": "تمت إضافة العميل بنجاح",
+    "createError": "خطأ أثناء إنشاء العميل",
+    "fetchError": "خطأ أثناء استرجاع العملاء",
+    "notFound": "العميل غير موجود",
+    "updateSuccess": "تم تحديث العميل بنجاح",
+    "updateError": "خطأ أثناء تحديث العميل",
+    "hasReservation": "هذا العميل لديه حجز",
+    "deleteSuccess": "تم حذف العميل بنجاح",
+    "deleteError": "خطأ أثناء حذف العميل"
+  },
+  "validator": {
+    "nomRequired": "الاسم مطلوب.",
+    "invalidName": "يجب أن يحتوي الاسم على أحرف فقط وأحرف خاصة مسموح بها.",
+    "prenomRequired": "الاسم الأول مطلوب.",
+    "invalidPrenom": "يجب أن يحتوي الاسم الأول على أحرف فقط وأحرف خاصة مسموح بها.",
+    "telephoneRequired": "رقم الهاتف مطلوب.",
+    "invalidTelephone": "يجب أن يحتوي رقم الهاتف على أرقام فقط.",
+    "telephoneLength": "يجب أن يحتوي رقم الهاتف على ما بين 8 و 15 رقمًا.",
+    "telephoneExists": "رقم الهاتف هذا مستخدم بالفعل.",
+    "idRequired": "رقم الهوية مطلوب.",
+    "notFound": "العميل غير موجود.",
+    "invalidUtilisateurId": "يجب أن يكون معرف المستخدم عددًا صحيحًا موجبًا.",
+    "utilisateurNotFound": "المستخدم المحدد غير موجود.",
+    "minLength": "يجب أن يحتوي الحقل على {{min}} حرفًا على الأقل."
+  },
+
+  "chambre": {
+    "numeroChambreExistant": "رقم الغرفة مستخدم بالفعل.",
+    "typeChambreNonExistant": "نوع الغرفة غير موجود.",
+    "chambreAjoutee": "تمت إضافة الغرفة بنجاح.",
+    "erreurCreationChambre": "حدث خطأ أثناء إنشاء الغرفة.",
+    "erreurRecuperationChambres": "حدث خطأ أثناء استرجاع الغرف.",
+    "chambreNonTrouvee": "لم يتم العثور على الغرفة.",
+    "erreurRecuperationChambre": "حدث خطأ أثناء استرجاع الغرفة.",
+    "chambreMiseAJour": "تم تحديث الغرفة بنجاح.",
+    "erreurMiseAJourChambre": "حدث خطأ أثناء تحديث الغرفة.",
+    "chambreAvecReservation": "هذه الغرفة تحتوي على حجز.",
+    "chambreSupprimee": "تم حذف الغرفة بنجاح.",
+    "erreurSuppressionChambre": "حدث خطأ أثناء حذف الغرفة."
+  },
+
+  "validator": {
+    "numeroChambreRequired": "رقم الغرفة مطلوب.",
+    "numeroChambrePositiveInt": "يجب أن يكون رقم الغرفة عددًا صحيحًا موجبًا.",
+    "numeroChambreExists": "رقم الغرفة هذا مستخدم بالفعل.",
+    "prixRequired": "السعر مطلوب.",
+    "prixPositive": "يجب أن يكون السعر أكبر من 0.",
+    "typeIdRequired": "نوع الغرفة مطلوب.",
+    "typeIdNotFound": "نوع الغرفة المحدد غير موجود.",
+    "idRequired": "المعرف مطلوب.",
+    "chambreNotFound": "الغرفة غير موجودة."
+  },
+
+  "reservation": {
+    "chambreNotFound": "الغرفة غير موجودة.",
+    "clientNotFound": "العميل غير موجود.",
+    "reservationCreated": "تمت إضافة الحجز بنجاح.",
+    "reservationCreationError": "حدث خطأ أثناء إنشاء الحجز.",
+    "reservationFetchError": "حدث خطأ أثناء استرجاع الحجوزات.",
+    "reservationNotFound": "الحجز غير موجود.",
+    "reservationUpdated": "تم تحديث الحجز بنجاح.",
+    "reservationUpdateError": "حدث خطأ أثناء تحديث الحجز.",
+    "reservationDeleted": "تم حذف الحجز بنجاح.",
+    "reservationDeleteError": "حدث خطأ أثناء حذف الحجز."
+  },
+
+  "validator": {
+    "dateDebutRequired": "تاريخ البدء مطلوب.",
+    "dateDebutInvalid": "يجب أن يكون تاريخ البدء تاريخًا صالحًا.",
+    "dateDebutBeforeDateFin": "يجب أن يكون تاريخ البدء قبل تاريخ الانتهاء.",
+    "dateFinRequired": "تاريخ الانتهاء مطلوب.",
+    "dateFinInvalid": "يجب أن يكون تاريخ الانتهاء تاريخًا صالحًا.",
+    "chambreIdRequired": "معرف الغرفة مطلوب.",
+    "chambreIdPositiveInt": "يجب أن يكون معرف الغرفة عددًا صحيحًا موجبًا.",
+    "chambreNotFound": "الغرفة المختارة غير موجودة.",
+    "clientIdRequired": "معرف العميل مطلوب.",
+    "clientIdPositiveInt": "يجب أن يكون معرف العميل عددًا صحيحًا موجبًا.",
+    "clientNotFound": "العميل المختار غير موجود.",
+    "reservationIdRequired": "معرف الحجز مطلوب.",
+    "reservationNotFound": "الحجز غير موجود."
+  }
+}

@@ -13,7 +13,7 @@ export const creerUtilisateur = async (req, res) => {
     });
 
     if (utilisateurExistant) {
-      return res.status(400).json({ message: "Cet email est déjà utilisé" });
+      return res.status(400).json({ message: req.t("user.emailAlreadyUsed") });
     }
 
     const nouvelUtilisateur = await prisma.utilisateur.create({
@@ -26,12 +26,12 @@ export const creerUtilisateur = async (req, res) => {
     });
 
     return res.status(201).json({
-      message: "Utilisateur ajouté avec succès",
+      message: req.t("user.createdSuccessfully"),
       utilisateur: nouvelUtilisateur
     });
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: req.t("error.generalError") });
   }
 };
 
@@ -41,9 +41,7 @@ export const afficherUtilisateurs = async (req, res) => {
     return res.status(200).json(utilisateurs);
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Erreur lors de la récupération des utilisateurs" });
+    return res.status(500).json({ message: req.t("error.fetchUsersError") });
   }
 };
 
@@ -55,13 +53,13 @@ export const afficherUtilisateurParId = async (req, res) => {
     });
 
     if (!utilisateur) {
-      return res.status(404).json({ message: "Utilisateur non trouvé" });
+      return res.status(404).json({ message: req.t("user.notFound") });
     }
 
     return res.status(200).json(utilisateur);
   } catch (error) {
     console.error(error);
-    return res.status(404).json({ message: error.message });
+    return res.status(404).json({ message: req.t("error.generalError") });
   }
 };
 
@@ -85,7 +83,7 @@ export const mettreAjourUtilisateur = async (req, res) => {
     });
 
     if (!utilisateur) {
-      return res.status(404).json({ message: "Utilisateur non trouvé" });
+      return res.status(404).json({ message: req.t("user.notFound") });
     }
 
     const utilisateurExistant = await prisma.utilisateur.findUnique({
@@ -93,7 +91,7 @@ export const mettreAjourUtilisateur = async (req, res) => {
     });
 
     if (utilisateurExistant && utilisateurExistant.id !== parseInt(id)) {
-      return res.status(400).json({ message: "Cet email est déjà utilisé" });
+      return res.status(400).json({ message: req.t("user.emailAlreadyUsed") });
     }
 
     const utilisateurMisAJour = await prisma.utilisateur.update({
@@ -102,12 +100,12 @@ export const mettreAjourUtilisateur = async (req, res) => {
     });
 
     return res.status(200).json({
-      message: "Utilisateur mis à jour avec succès",
+      message: req.t("user.updatedSuccessfully"),
       utilisateur: utilisateurMisAJour
     });
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: req.t("error.generalError") });
   }
 };
 
@@ -119,18 +117,16 @@ export const supprimerUtilisateur = async (req, res) => {
     });
 
     if (!utilisateur) {
-      return res.status(404).json({ message: "Utilisateur non trouvé" });
+      return res.status(404).json({ message: req.t("user.notFound") });
     }
 
     await prisma.utilisateur.delete({
       where: { id: parseInt(id) }
     });
 
-    return res
-      .status(200)
-      .json({ message: "Utilisateur supprimé avec succès" });
+    return res.status(200).json({ message: req.t("user.deletedSuccessfully") });
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: req.t("error.generalError") });
   }
 };

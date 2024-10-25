@@ -1,0 +1,144 @@
+{
+  "user": {
+    "emailAlreadyUsed": "This email is already in use",
+    "createdSuccessfully": "User created successfully",
+    "updatedSuccessfully": "User updated successfully",
+    "deletedSuccessfully": "User deleted successfully",
+    "notFound": "User not found"
+  },
+  "error": {
+    "generalError": "An error occurred",
+    "fetchUsersError": "Error fetching users"
+  },
+  "validator": {
+    "nom": {
+      "required": "Name is required.",
+      "invalid": "Name must contain only letters and allowed special characters.",
+      "minLength": "Name must be at least 3 characters long."
+    },
+    "email": {
+      "required": "Email is required.",
+      "invalid": "Email must be valid.",
+      "alreadyUsed": "This email is already in use."
+    },
+    "password": {
+      "required": "Password is required.",
+      "minLength": "Password must be at least 4 characters long."
+    },
+    "role": {
+      "required": "Role is required.",
+      "invalid": "Role must be either ADMIN or MANAGER."
+    },
+    "id": {
+      "required": "ID is required."
+    },
+    "user": {
+      "notFound": "User not found."
+    }
+  },
+
+  "typeChambre": {
+    "nameAlreadyExists": "The type room name already exists.",
+    "addedSuccessfully": "Type room added successfully.",
+    "notFound": "Type room not found.",
+    "updatedSuccessfully": "Type room updated successfully.",
+    "deletedSuccessfully": "Type room deleted successfully.",
+    "typeInUse": "This type is in use by a room."
+  },
+  "error": {
+    "creationTypeChambreError": "Error while creating type room.",
+    "fetchingTypesChambresError": "Error while fetching types of rooms.",
+    "fetchingTypeChambreError": "Error while fetching type room.",
+    "updatingTypeChambreError": "Error while updating type room.",
+    "deletingTypeChambreError": "Error while deleting type room."
+  },
+  "validator": {
+    "nomRequired": "The room type name is required.",
+    "maxLength": "The name cannot exceed 50 characters.",
+    "idRequired": "The room type ID is required.",
+    "notFound": "The room type does not exist.",
+    "invalidName": "The name contains invalid characters."
+  },
+
+  "client": {
+    "telephoneUsed": "The phone number is already in use",
+    "addSuccess": "Client added successfully",
+    "createError": "Error while creating the client",
+    "fetchError": "Error while fetching the clients",
+    "notFound": "Client not found",
+    "updateSuccess": "Client updated successfully",
+    "updateError": "Error while updating the client",
+    "hasReservation": "This client has a reservation",
+    "deleteSuccess": "Client deleted successfully",
+    "deleteError": "Error while deleting the client"
+  },
+  "validator": {
+    "nomRequired": "The name is required.",
+    "invalidName": "The name should only contain letters and allowed special characters.",
+    "prenomRequired": "The first name is required.",
+    "invalidPrenom": "The first name should only contain letters and allowed special characters.",
+    "telephoneRequired": "The phone number is required.",
+    "invalidTelephone": "The phone number should contain only digits.",
+    "telephoneLength": "The phone number must be between 8 and 15 digits.",
+    "telephoneExists": "This phone number is already in use.",
+    "idRequired": "The ID is required.",
+    "notFound": "The client does not exist.",
+    "minLength": "The field must contain at least {{min}} characters."
+  },
+
+  "chambre": {
+    "numeroChambreExistant": "The room number is already in use.",
+    "typeChambreNonExistant": "The room type does not exist.",
+    "chambreAjoutee": "Room added successfully.",
+    "erreurCreationChambre": "Error occurred while creating the room.",
+    "erreurRecuperationChambres": "Error occurred while retrieving the rooms.",
+    "chambreNonTrouvee": "Room not found.",
+    "erreurRecuperationChambre": "Error occurred while retrieving the room.",
+    "chambreMiseAJour": "Room updated successfully.",
+    "erreurMiseAJourChambre": "Error occurred while updating the room.",
+    "chambreAvecReservation": "This room has a reservation.",
+    "chambreSupprimee": "Room deleted successfully.",
+    "erreurSuppressionChambre": "Error occurred while deleting the room."
+  },
+
+  "validator": {
+    "numeroChambreRequired": "The room number is required.",
+    "numeroChambrePositiveInt": "The room number must be a positive integer.",
+    "numeroChambreExists": "This room number is already in use.",
+    "prixRequired": "The price is required.",
+    "prixPositive": "The price must be greater than 0.",
+    "typeIdRequired": "The room type is required.",
+    "typeIdNotFound": "The selected room type does not exist.",
+    "idRequired": "The ID is required.",
+    "chambreNotFound": "The room does not exist."
+  },
+
+  "reservation": {
+    "chambreNotFound": "The room does not exist.",
+    "clientNotFound": "The client does not exist.",
+    "reservationCreated": "Reservation created successfully.",
+    "reservationCreationError": "Error occurred while creating the reservation.",
+    "reservationFetchError": "Error occurred while fetching reservations.",
+    "reservationNotFound": "Reservation not found.",
+    "reservationUpdated": "Reservation updated successfully.",
+    "reservationUpdateError": "Error occurred while updating the reservation.",
+    "reservationDeleted": "Reservation deleted successfully.",
+    "reservationDeleteError": "Error occurred while deleting the reservation."
+  },
+
+  "validator": {
+    "dateDebutRequired": "The start date is required.",
+    "dateDebutInvalid": "The start date must be a valid date.",
+    "dateDebutBeforeDateFin": "The start date must be before the end date.",
+    "dateFinRequired": "The end date is required.",
+    "dateFinInvalid": "The end date must be a valid date.",
+    "chambreIdRequired": "The room ID is required.",
+    "chambreIdPositiveInt": "The room ID must be a positive integer.",
+    "chambreNotFound": "The selected room does not exist.",
+    "clientIdRequired": "The client ID is required.",
+    "clientIdPositiveInt": "The client ID must be a positive integer.",
+    "clientNotFound": "The selected client does not exist.",
+    "reservationIdRequired": "The reservation ID is required.",
+    "reservationNotFound": "The reservation does not exist."
+  }
+}

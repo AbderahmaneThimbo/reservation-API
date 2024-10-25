@@ -1,0 +1,145 @@
+{
+  "user": {
+    "emailAlreadyUsed": "Cet email est déjà utilisé",
+    "createdSuccessfully": "Utilisateur ajouté avec succès",
+    "updatedSuccessfully": "Utilisateur mis à jour avec succès",
+    "deletedSuccessfully": "Utilisateur supprimé avec succès",
+    "notFound": "Utilisateur non trouvé"
+  },
+  "error": {
+    "generalError": "Une erreur s'est produite",
+    "fetchUsersError": "Erreur lors de la récupération des utilisateurs"
+  },
+  "validator": {
+    "nom": {
+      "required": "Le nom est obligatoire.",
+      "invalid": "Le nom doit contenir uniquement des lettres et des caractères spéciaux autorisés.",
+      "minLength": "Le nom doit contenir au moins 3 caractères."
+    },
+    "email": {
+      "required": "L'email est obligatoire.",
+      "invalid": "L'email doit être valide.",
+      "alreadyUsed": "Cet email est déjà utilisé."
+    },
+    "password": {
+      "required": "Le mot de passe est obligatoire.",
+      "minLength": "Le mot de passe doit contenir au moins 4 caractères."
+    },
+    "role": {
+      "required": "Le rôle est obligatoire.",
+      "invalid": "Le rôle doit être ADMIN ou GESTIONNAIRE"
+    },
+    "id": {
+      "required": "L'id est obligatoire."
+    },
+    "user": {
+      "notFound": "L'utilisateur n'existe pas."
+    }
+  },
+
+  "typeChambre": {
+    "nameAlreadyExists": "Le nom du type de chambre existe déjà.",
+    "addedSuccessfully": "Type de chambre ajouté avec succès.",
+    "notFound": "Type de chambre non trouvé.",
+    "updatedSuccessfully": "Type de chambre mis à jour avec succès.",
+    "deletedSuccessfully": "Type de chambre supprimé avec succès.",
+    "typeInUse": "Ce type est utilisé par une chambre."
+  },
+  "error": {
+    "creationTypeChambreError": "Erreur lors de la création du type de chambre.",
+    "fetchingTypesChambresError": "Erreur lors de la récupération des types de chambres.",
+    "fetchingTypeChambreError": "Erreur lors de la récupération du type de chambre.",
+    "updatingTypeChambreError": "Erreur lors de la mise à jour du type de chambre.",
+    "deletingTypeChambreError": "Erreur lors de la suppression du type de chambre."
+  },
+  "validator": {
+    "nomRequired": "Le nom du type de chambre est obligatoire.",
+    "maxLength": "Le nom ne peut pas dépasser 50 caractères.",
+    "idRequired": "L'id du type de chambre est obligatoire.",
+    "notFound": "Le type de chambre n'existe pas.",
+    "invalidName": "Le nom contient des caractères non valides."
+  },
+
+  "client": {
+    "telephoneUsed": "Le numéro de téléphone est déjà utilisé",
+    "addSuccess": "Client ajouté avec succès",
+    "createError": "Erreur lors de la création du client",
+    "fetchError": "Erreur lors de la récupération des clients",
+    "notFound": "Client non trouvé",
+    "updateSuccess": "Client mis à jour avec succès",
+    "updateError": "Erreur lors de la mise à jour du client",
+    "hasReservation": "Ce client à une réservation",
+    "deleteSuccess": "Client supprimé avec succès",
+    "deleteError": "Erreur lors de la suppression du client"
+  },
+  "validator": {
+    "nomRequired": "Le nom est obligatoire.",
+    "invalidName": "Le nom doit contenir uniquement des lettres et des caractères spéciaux autorisés.",
+    "prenomRequired": "Le prénom est obligatoire.",
+    "invalidPrenom": "Le prénom doit contenir uniquement des lettres et des caractères spéciaux autorisés.",
+    "telephoneRequired": "Le numéro de téléphone est obligatoire.",
+    "invalidTelephone": "Le numéro de téléphone doit contenir uniquement des chiffres.",
+    "telephoneLength": "Le numéro de téléphone doit contenir entre 8 et 15 chiffres.",
+    "telephoneExists": "Ce numéro de téléphone est déjà utilisé.",
+    "idRequired": "L'ID est obligatoire.",
+    "notFound": "Le client n'existe pas.",
+    "invalidUtilisateurId": "L'ID de l'utilisateur doit être un entier positif.",
+    "utilisateurNotFound": "L'utilisateur sélectionné n'existe pas.",
+    "minLength": "Le champ doit contenir au moins {{min}} caractères."
+  },
+
+  "chambre": {
+    "numeroChambreExistant": "Le numéro de chambre est déjà utilisé.",
+    "typeChambreNonExistant": "Le type de chambre n'existe pas.",
+    "chambreAjoutee": "Chambre ajoutée avec succès.",
+    "erreurCreationChambre": "Erreur lors de la création de la chambre.",
+    "erreurRecuperationChambres": "Erreur lors de la récupération des chambres.",
+    "chambreNonTrouvee": "Chambre non trouvée.",
+    "erreurRecuperationChambre": "Erreur lors de la récupération de la chambre.",
+    "chambreMiseAJour": "Chambre mise à jour avec succès.",
+    "erreurMiseAJourChambre": "Erreur lors de la mise à jour de la chambre.",
+    "chambreAvecReservation": "Cette chambre a une réservation.",
+    "chambreSupprimee": "Chambre supprimée avec succès.",
+    "erreurSuppressionChambre": "Erreur lors de la suppression de la chambre."
+  },
+
+  "validator": {
+    "numeroChambreRequired": "Le numéro de la chambre est obligatoire.",
+    "numeroChambrePositiveInt": "Le numéro de la chambre doit être un entier positif.",
+    "numeroChambreExists": "Ce numéro de chambre est déjà utilisé.",
+    "prixRequired": "Le prix est obligatoire.",
+    "prixPositive": "Le prix doit être un nombre supérieur à 0.",
+    "typeIdRequired": "Le type de la chambre est obligatoire.",
+    "typeIdNotFound": "Le type de chambre sélectionné n'existe pas.",
+    "idRequired": "L'id est obligatoire.",
+    "chambreNotFound": "La chambre n'existe pas."
+  },
+  "reservation": {
+    "chambreNotFound": "La chambre n'existe pas.",
+    "clientNotFound": "Le client n'existe pas.",
+    "reservationCreated": "Réservation ajoutée avec succès.",
+    "reservationCreationError": "Erreur lors de la création de la réservation.",
+    "reservationFetchError": "Erreur lors de la récupération des réservations.",
+    "reservationNotFound": "Réservation non trouvée.",
+    "reservationUpdated": "Réservation mise à jour avec succès.",
+    "reservationUpdateError": "Erreur lors de la mise à jour de la réservation.",
+    "reservationDeleted": "Réservation supprimée avec succès.",
+    "reservationDeleteError": "Erreur lors de la suppression de la réservation."
+  },
+
+  "validator": {
+    "dateDebutRequired": "La date de début est obligatoire.",
+    "dateDebutInvalid": "La date de début doit être une date valide.",
+    "dateDebutBeforeDateFin": "La date de début doit être avant la date de fin.",
+    "dateFinRequired": "La date de fin est obligatoire.",
+    "dateFinInvalid": "La date de fin doit être une date valide.",
+    "chambreIdRequired": "L'ID de la chambre est obligatoire.",
+    "chambreIdPositiveInt": "L'ID de la chambre doit être un entier positif.",
+    "chambreNotFound": "La chambre sélectionnée n'existe pas.",
+    "clientIdRequired": "L'ID du client est obligatoire.",
+    "clientIdPositiveInt": "L'ID du client doit être un entier positif.",
+    "clientNotFound": "Le client sélectionné n'existe pas.",
+    "reservationIdRequired": "L'ID de la réservation est obligatoire.",
+    "reservationNotFound": "La réservation n'existe pas."
+  }
+}

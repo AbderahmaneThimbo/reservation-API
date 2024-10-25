@@ -5,39 +5,39 @@ import { StatusCodes } from "http-status-codes";
 const creerChambreValidator = [
   check("numeroChambre")
     .notEmpty()
-    .withMessage("Le numéro de la chambre est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.numeroChambreRequired"))
     .bail()
     .isInt({ min: 1 })
-    .withMessage("Le numéro de la chambre doit être un entier positif.")
+    .withMessage((_, { req }) => req.t("validator.numeroChambrePositiveInt"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const chambreExistante = await prisma.chambre.findUnique({
         where: { numeroChambre: value }
       });
       if (chambreExistante) {
-        throw new Error("Ce numéro de chambre est déjà utilisé.");
+        throw new Error(req.t("validator.numeroChambreExists"));
       }
       return true;
     }),
 
   check("prix")
     .notEmpty()
-    .withMessage("Le prix est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.prixRequired"))
     .bail()
     .isFloat({ gt: 0 })
-    .withMessage("Le prix doit être un nombre supérieur à 0.")
+    .withMessage((_, { req }) => req.t("validator.prixPositive"))
     .bail(),
 
   check("typeId")
     .notEmpty()
-    .withMessage("Le type de la chambre est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.typeIdRequired"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const type = await prisma.typeChambre.findUnique({
         where: { id: value }
       });
       if (!type) {
-        throw new Error("Le type de chambre sélectionné n'existe pas.");
+        throw new Error(req.t("validator.typeIdNotFound"));
       }
       return true;
     }),
@@ -56,14 +56,14 @@ const creerChambreValidator = [
 const mettreAjourChambreValidator = [
   param("id")
     .notEmpty()
-    .withMessage("L'id est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.idRequired"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const chambre = await prisma.chambre.findUnique({
         where: { id: parseInt(value) }
       });
       if (!chambre) {
-        throw new Error("La chambre n'existe pas.");
+        throw new Error(req.t("validator.chambreNotFound"));
       }
       return true;
     }),
@@ -71,14 +71,14 @@ const mettreAjourChambreValidator = [
   check("numeroChambre")
     .optional()
     .isInt({ min: 1 })
-    .withMessage("Le numéro de la chambre doit être un entier positif.")
+    .withMessage((_, { req }) => req.t("validator.numeroChambrePositiveInt"))
     .bail()
     .custom(async (value, { req }) => {
       const chambreExistante = await prisma.chambre.findUnique({
         where: { numeroChambre: value }
       });
       if (chambreExistante && chambreExistante.id !== parseInt(req.params.id)) {
-        throw new Error("Ce numéro de chambre est déjà utilisé.");
+        throw new Error(req.t("validator.numeroChambreExists"));
       }
       return true;
     }),
@@ -86,7 +86,7 @@ const mettreAjourChambreValidator = [
   check("prix")
     .optional()
     .isFloat({ gt: 0 })
-    .withMessage("Le prix doit être un nombre supérieur à 0.")
+    .withMessage((_, { req }) => req.t("validator.prixPositive"))
     .bail(),
 
   check("typeId").optional().custom(async value => {
@@ -94,7 +94,7 @@ const mettreAjourChambreValidator = [
       where: { id: value }
     });
     if (!type) {
-      throw new Error("Le type de chambre sélectionné n'existe pas.");
+      throw new Error(req.t("validator.typeIdNotFound"));
     }
     return true;
   }),
@@ -113,14 +113,14 @@ const mettreAjourChambreValidator = [
 const supprimerChambreValidator = [
   param("id")
     .notEmpty()
-    .withMessage("L'id est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.idRequired"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const chambre = await prisma.chambre.findUnique({
         where: { id: parseInt(value) }
       });
       if (!chambre) {
-        throw new Error("La chambre n'existe pas.");
+        throw new Error(req.t("validator.chambreNotFound"));
       }
       return true;
     }),

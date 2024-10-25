@@ -5,56 +5,56 @@ import { StatusCodes } from "http-status-codes";
 const creerReservationValidator = [
   check("dateDebut")
     .notEmpty()
-    .withMessage("La date de début est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.dateDebutRequired"))
     .bail()
     .isISO8601()
-    .withMessage("La date de début doit être une date valide.")
+    .withMessage((_, { req }) => req.t("validator.dateDebutInvalid"))
     .bail()
     .custom((value, { req }) => {
       if (new Date(value) >= new Date(req.body.dateFin)) {
-        throw new Error("La date de début doit être avant la date de fin.");
+        throw new Error(req.t("validator.dateDebutBeforeDateFin"));
       }
       return true;
     }),
 
   check("dateFin")
     .notEmpty()
-    .withMessage("La date de fin est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.dateFinRequired"))
     .bail()
     .isISO8601()
-    .withMessage("La date de fin doit être une date valide.")
+    .withMessage((_, { req }) => req.t("validator.dateFinInvalid"))
     .bail(),
 
   check("chambreId")
     .notEmpty()
-    .withMessage("L'ID de la chambre est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.chambreIdRequired"))
     .bail()
     .isInt({ min: 1 })
-    .withMessage("L'ID de la chambre doit être un entier positif.")
+    .withMessage((_, { req }) => req.t("validator.chambreIdPositiveInt"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const chambre = await prisma.chambre.findUnique({
         where: { id: value }
       });
       if (!chambre) {
-        throw new Error("La chambre sélectionnée n'existe pas.");
+        throw new Error(req.t("validator.chambreNotFound"));
       }
       return true;
     }),
 
   check("clientId")
     .notEmpty()
-    .withMessage("L'ID du client est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.clientIdRequired"))
     .bail()
     .isInt({ min: 1 })
-    .withMessage("L'ID du client doit être un entier positif.")
+    .withMessage((_, { req }) => req.t("validator.clientIdPositiveInt"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const client = await prisma.client.findUnique({
         where: { id: value }
       });
       if (!client) {
-        throw new Error("Le client sélectionné n'existe pas.");
+        throw new Error(req.t("validator.clientNotFound"));
       }
       return true;
     }),
@@ -73,14 +73,14 @@ const creerReservationValidator = [
 const mettreAjourReservationValidator = [
   param("id")
     .notEmpty()
-    .withMessage("L'id de la réservation est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.reservationIdRequired"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const reservation = await prisma.reservation.findUnique({
         where: { id: parseInt(value) }
       });
       if (!reservation) {
-        throw new Error("La réservation n'existe pas.");
+        throw new Error(req.t("validator.reservationNotFound"));
       }
       return true;
     }),
@@ -88,11 +88,11 @@ const mettreAjourReservationValidator = [
   check("dateDebut")
     .optional()
     .isISO8601()
-    .withMessage("La date de début doit être une date valide.")
+    .withMessage((_, { req }) => req.t("validator.dateDebutInvalid"))
     .bail()
     .custom((value, { req }) => {
       if (req.body.dateFin && new Date(value) >= new Date(req.body.dateFin)) {
-        throw new Error("La date de début doit être avant la date de fin.");
+        throw new Error(req.t("validator.dateDebutBeforeDateFin"));
       }
       return true;
     }),
@@ -100,20 +100,20 @@ const mettreAjourReservationValidator = [
   check("dateFin")
     .optional()
     .isISO8601()
-    .withMessage("La date de fin doit être une date valide.")
+    .withMessage((_, { req }) => req.t("validator.dateFinInvalid"))
     .bail(),
 
   check("chambreId")
     .optional()
     .isInt({ min: 1 })
-    .withMessage("L'ID de la chambre doit être un entier positif.")
+    .withMessage((_, { req }) => req.t("validator.chambreIdPositiveInt"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const chambre = await prisma.chambre.findUnique({
         where: { id: value }
       });
       if (!chambre) {
-        throw new Error("La chambre sélectionnée n'existe pas.");
+        throw new Error(req.t("validator.chambreNotFound"));
       }
       return true;
     }),
@@ -121,14 +121,14 @@ const mettreAjourReservationValidator = [
   check("clientId")
     .optional()
     .isInt({ min: 1 })
-    .withMessage("L'ID du client doit être un entier positif.")
+    .withMessage((_, { req }) => req.t("validator.clientIdPositiveInt"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const client = await prisma.client.findUnique({
         where: { id: value }
       });
       if (!client) {
-        throw new Error("Le client sélectionné n'existe pas.");
+        throw new Error(req.t("validator.clientNotFound"));
       }
       return true;
     }),
@@ -147,14 +147,14 @@ const mettreAjourReservationValidator = [
 const supprimerReservationValidator = [
   param("id")
     .notEmpty()
-    .withMessage("L'id de la réservation est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.reservationIdRequired"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const reservation = await prisma.reservation.findUnique({
         where: { id: parseInt(value) }
       });
       if (!reservation) {
-        throw new Error("La réservation n'existe pas.");
+        throw new Error(req.t("validator.reservationNotFound"));
       }
       return true;
     }),

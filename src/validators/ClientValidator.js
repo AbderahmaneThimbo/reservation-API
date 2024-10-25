@@ -2,51 +2,45 @@ import { check, param, validationResult } from "express-validator";
 import prisma from "../config/prisma.js";
 import { StatusCodes } from "http-status-codes";
 
-const creerClientValidator = [
+export const creerClientValidator = [
   check("nom")
     .notEmpty()
-    .withMessage("Le nom est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.nomRequired"))
     .bail()
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
-    .withMessage(
-      "Le nom doit contenir uniquement des lettres et des caractères spéciaux autorisés."
-    )
+    .withMessage((_, { req }) => req.t("validator.invalidName"))
     .bail()
     .isLength({ min: 2 })
-    .withMessage("Le nom doit contenir au moins 2 caractères.")
+    .withMessage((_, { req }) => req.t("validator.minLength", { min: 2 }))
     .bail(),
 
   check("prenom")
     .notEmpty()
-    .withMessage("Le prénom est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.prenomRequired"))
     .bail()
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
-    .withMessage(
-      "Le prénom doit contenir uniquement des lettres et des caractères spéciaux autorisés."
-    )
+    .withMessage((_, { req }) => req.t("validator.invalidPrenom"))
     .bail()
     .isLength({ min: 2 })
-    .withMessage("Le prénom doit contenir au moins 2 caractères.")
+    .withMessage((_, { req }) => req.t("validator.minLength", { min: 2 }))
     .bail(),
 
   check("telephone")
     .notEmpty()
-    .withMessage("Le numéro de téléphone est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.telephoneRequired"))
     .bail()
     .matches(/^[0-9]+$/)
-    .withMessage(
-      "Le numéro de téléphone doit contenir uniquement des chiffres."
-    )
+    .withMessage((_, { req }) => req.t("validator.invalidTelephone"))
     .bail()
     .isLength({ min: 8, max: 15 })
-    .withMessage("Le numéro de téléphone doit contenir entre 8 et 15 chiffres.")
+    .withMessage((_value, { req }) => req.t("validator.telephoneLength"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const clientExistant = await prisma.client.findUnique({
         where: { telephone: value }
       });
       if (clientExistant) {
-        throw new Error("Ce numéro de téléphone est déjà utilisé.");
+        throw new Error(req.t("validator.telephoneExists"));
       }
       return true;
     }),
@@ -62,17 +56,17 @@ const creerClientValidator = [
   }
 ];
 
-const mettreAjourClientValidator = [
+export const mettreAjourClientValidator = [
   param("id")
     .notEmpty()
-    .withMessage("L'id est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.idRequired"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const client = await prisma.client.findUnique({
         where: { id: parseInt(value) }
       });
       if (!client) {
-        throw new Error("Le client n'existe pas.");
+        throw new Error(req.t("validator.notFound"));
       }
       return true;
     }),
@@ -80,56 +74,35 @@ const mettreAjourClientValidator = [
   check("nom")
     .optional()
     .isLength({ min: 2 })
-    .withMessage("Le nom doit contenir au moins 2 caractères.")
+    .withMessage((_, { req }) => req.t("validator.minLength", { min: 2 }))
     .bail()
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
-    .withMessage(
-      "Le nom doit contenir uniquement des lettres et des caractères spéciaux autorisés."
-    )
+    .withMessage((_, { req }) => req.t("validator.invalidName"))
     .bail(),
 
   check("prenom")
     .optional()
     .isLength({ min: 2 })
-    .withMessage("Le prénom doit contenir au moins 2 caractères.")
+    .withMessage((_, { req }) => req.t("validator.minLength", { min: 2 }))
     .bail()
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
-    .withMessage(
-      "Le prénom doit contenir uniquement des lettres et des caractères spéciaux autorisés."
-    )
+    .withMessage((_, { req }) => req.t("validator.invalidPrenom"))
     .bail(),
 
   check("telephone")
     .optional()
     .matches(/^[0-9]+$/)
-    .withMessage(
-      "Le numéro de téléphone doit contenir uniquement des chiffres."
-    )
+    .withMessage((_, { req }) => req.t("validator.invalidTelephone"))
     .bail()
     .isLength({ min: 8, max: 15 })
-    .withMessage("Le numéro de téléphone doit contenir entre 8 et 15 chiffres.")
+    .withMessage((_, { req }) => req.t("validator.telephoneLength"))
     .bail()
     .custom(async (value, { req }) => {
       const clientExistant = await prisma.client.findUnique({
         where: { telephone: value }
       });
       if (clientExistant && clientExistant.id !== parseInt(req.params.id)) {
-        throw new Error("Ce numéro de téléphone est déjà utilisé.");
-      }
-      return true;
-    }),
-
-  check("utilisateurId")
-    .optional()
-    .isInt({ min: 1 })
-    .withMessage("L'ID de l'utilisateur doit être un entier positif.")
-    .bail()
-    .custom(async value => {
-      const utilisateur = await prisma.utilisateur.findUnique({
-        where: { id: value }
-      });
-      if (!utilisateur) {
-        throw new Error("L'utilisateur sélectionné n'existe pas.");
+        throw new Error(req.t("validator.telephoneExists"));
       }
       return true;
     }),
@@ -145,17 +118,17 @@ const mettreAjourClientValidator = [
   }
 ];
 
-const supprimerClientValidator = [
+export const supprimerClientValidator = [
   param("id")
     .notEmpty()
-    .withMessage("L'id est obligatoire.")
+    .withMessage((_, { req }) => req.t("validator.idRequired"))
     .bail()
-    .custom(async value => {
+    .custom(async (value, { req }) => {
       const utilisateur = await prisma.client.findUnique({
         where: { id: parseInt(value) }
       });
       if (!utilisateur) {
-        throw new Error("Le client n'existe pas.");
+        throw new Error(req.t("validator.notFound"));
       }
       return true;
     }),
@@ -170,9 +143,3 @@ const supprimerClientValidator = [
     next();
   }
 ];
-
-export {
-  creerClientValidator,
-  mettreAjourClientValidator,
-  supprimerClientValidator
-};

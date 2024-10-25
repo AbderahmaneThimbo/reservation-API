@@ -14,18 +14,18 @@ export const creerTypeChambre = async (req, res) => {
     if (nomExistant) {
       return res
         .status(400)
-        .json({ message: "Le nom du type de chambre est existe déja" });
+        .json({ message: req.t("typeChambre.nameAlreadyExists") });
     }
 
     await prisma.typeChambre.create({
       data: { nom, utilisateurId }
     });
 
-    res.status(201).json({ message: "Type de chambre ajouté avec succès" });
+    res.status(201).json({ message: req.t("typeChambre.addedSuccessfully") });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Erreur lors de la création du type de chambre",
+      message: req.t("error.creationTypeChambreError"),
       error
     });
   }
@@ -42,7 +42,7 @@ export const afficherTypeChambres = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Erreur lors de la récupération des types de chambres",
+      message: req.t("error.fetchingTypesChambresError"),
       error
     });
   }
@@ -59,14 +59,14 @@ export const afficherTypeChambreParId = async (req, res) => {
     });
 
     if (!typeChambre) {
-      return res.status(404).json({ message: "Type de chambre non trouvé" });
+      return res.status(404).json({ message: req.t("typeChambre.notFound") });
     }
 
     return res.status(200).json(typeChambre);
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Erreur lors de la récupération du type de chambre",
+      message: req.t("error.fetchingTypeChambreError"),
       error
     });
   }
@@ -82,7 +82,7 @@ export const mettreAJourTypeChambre = async (req, res) => {
     });
 
     if (!typeExistant) {
-      return res.status(404).json({ message: "Type de chambre non trouvé" });
+      return res.status(404).json({ message: req.t("typeChambre.notFound") });
     }
 
     await prisma.typeChambre.update({
@@ -90,11 +90,11 @@ export const mettreAJourTypeChambre = async (req, res) => {
       data: { nom, utilisateurId }
     });
 
-    return res.json({ message: "Type de chambre mis à jour avec succès" });
+    return res.json({ message: req.t("typeChambre.updatedSuccessfully") });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Erreur lors de la mise à jour du type de chambre",
+      message: req.t("error.updatingTypeChambreError"),
       error
     });
   }
@@ -108,27 +108,25 @@ export const supprimerTypeChambre = async (req, res) => {
     });
 
     if (!typeChambre) {
-      return res.status(404).json({ message: "Type de chambre non trouvé" });
+      return res.status(404).json({ message: req.t("typeChambre.notFound") });
     }
     const chambresUtilisantType = await prisma.chambre.findFirst({
       where: { typeId: parseInt(id) }
     });
 
     if (chambresUtilisantType) {
-      return res
-        .status(400)
-        .json({ message: "Ce type est utilisé par une chambre" });
+      return res.status(400).json({ message: req.t("typeChambre.typeInUse") });
     }
 
     await prisma.typeChambre.delete({
       where: { id: parseInt(id) }
     });
 
-    return res.json({ message: "Type de chambre supprimé avec succès" });
+    return res.json({ message: req.t("typeChambre.deletedSuccessfully") });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Erreur lors de la suppression du type de chambre",
+      message: req.t("error.deletingTypeChambreError"),
       error
     });
   }
