@@ -142,5 +142,19 @@
     "clientNotFound": "العميل المختار غير موجود.",
     "reservationIdRequired": "معرف الحجز مطلوب.",
     "reservationNotFound": "الحجز غير موجود."
+  },
+
+  "forget": {
+    "notFound": "المستخدم غير موجود",
+    "emailAlreadyUsed": "البريد الإلكتروني مستخدم بالفعل",
+    "createdSuccessfully": "تم إنشاء المستخدم بنجاح",
+    "updatedSuccessfully": "تم تحديث المستخدم بنجاح",
+    "deletedSuccessfully": "تم حذف المستخدم بنجاح",
+    "passwordResetEmailSent": "تم إرسال بريد إلكتروني لإعادة تعيين كلمة المرور",
+    "passwordUpdatedSuccessfully": "تم تحديث كلمة المرور بنجاح"
+  },
+  "forgeterror": {
+    "generalError": "حدث خطأ",
+    "invalidOrExpiredToken": "الرابط لإعادة تعيين كلمة المرور غير صالح أو انتهت صلاحيته"
   }
 }

@@ -141,5 +141,19 @@
     "clientNotFound": "Le client sélectionné n'existe pas.",
     "reservationIdRequired": "L'ID de la réservation est obligatoire.",
     "reservationNotFound": "La réservation n'existe pas."
+  },
+
+  "forget": {
+    "notFound": "Utilisateur non trouvé",
+    "emailAlreadyUsed": "Cet email est déjà utilisé",
+    "createdSuccessfully": "Utilisateur créé avec succès",
+    "updatedSuccessfully": "Utilisateur mis à jour avec succès",
+    "deletedSuccessfully": "Utilisateur supprimé avec succès",
+    "passwordResetEmailSent": "Email de réinitialisation de mot de passe envoyé",
+    "passwordUpdatedSuccessfully": "Mot de passe mis à jour avec succès"
+  },
+  "forgeterror": {
+    "generalError": "Une erreur est survenue",
+    "invalidOrExpiredToken": "Le lien de réinitialisation a expiré ou est invalide"
   }
 }
