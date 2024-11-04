@@ -1,0 +1,1140 @@
+{
+	"info": {
+		"_postman_id": "c3f64871-895f-4c9b-a621-0d630a2dfc91",
+		"name": "gestion-reservation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38098463"
+	},
+	"item": [
+		{
+			"name": "get-utilisateurs",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzAyOTY0NTUsImV4cCI6MTczMDM3OTI1NX0.E8OsuDeSmnGZIDtaWJtxB7n32CbLzmPHro_AP4W7xbw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/utilisateurs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"utilisateurs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-clients",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzAxMjYzOTYsImV4cCI6MTczMDEyOTk5Nn0.H3pwoa7q_9KaAWvAFExjm3g0mcl2ML3tTeNsRhx-vfw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/clients",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"clients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-types",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzAxOTk0MjgsImV4cCI6MTczMDI4MjIyOH0.DDRckwjqs1dCS-8QL79gUlGWnwtsM_41MFhreXAMsJY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/types",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-chambres",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzAyODE0MzksImV4cCI6MTczMDM2NDIzOX0.xyGZSJQs27a2A2JuVZhiPi9xe0bNQj0jJ1nzJBvCDLE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/chambres",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"chambres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-reservations",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjo2NCwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzMwNDYwMDI2LCJleHAiOjE3MzA1NDI4MjZ9.4xX5ZTEOAmuOAp95dt7HQS6-_qapKD0bIKT56qrMNLk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/reservations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"reservations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-utilisateur",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/utilisateurs/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"utilisateurs",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-client",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mjk2MzExNDYsImV4cCI6MTcyOTYzNDc0Nn0.xOeKt5uIBe7YcKH74dcWab_FMmv5SvFe3W5Vb4c66vI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/clients/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"clients",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-type/chambres",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzAxOTk0MjgsImV4cCI6MTczMDI4MjIyOH0.DDRckwjqs1dCS-8QL79gUlGWnwtsM_41MFhreXAMsJY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/types/2/chambres",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"types",
+						"2",
+						"chambres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-type",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzAxOTk0MjgsImV4cCI6MTczMDI4MjIyOH0.DDRckwjqs1dCS-8QL79gUlGWnwtsM_41MFhreXAMsJY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/types/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"types",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-chambre",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzAyMzM5NzMsImV4cCI6MTczMDMxNjc3M30.vENHpBJ7XmptsuWbYJTOr1KGUgrrHqgowXe0SMwegaE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/chambres/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"chambres",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-reservation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mjk3NjUwMjcsImV4cCI6MTcyOTc2ODYyN30.T1FR3bK47veEWpss7jNSpUbbrWGcXetA7v2ygKgU2-k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/reservations/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"reservations",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST-utilisateur",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzAzODc5NDAsImV4cCI6MTczMDQ3MDc0MH0.lJxdaAqhw0BjvikBwLtO5m96K-k-Dtfq84Xjyn5m1FE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxMCwicm9sZSI6InV0aWxpc2F0ZXVyIiwiaWF0IjoxNzI5MzU1NjQ1LCJleHAiOjE3MjkzNTkyNDV9.IN8gGgGHQTDBJj2S9ILxokw3TKkDjhKWKUqydqCEA2Q",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"nom\": \"ousman\",\r\n        \"email\": \"lyousmane492@gmail.com\",\r\n        \"role\": \"GESTIONNAIRE\",\r\n        \"password\": \"1234\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/utilisateurs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"utilisateurs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST-client",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mjk4MTE0MDYsImV4cCI6MTcyOTgxNTAwNn0.olseoslSv2NbgqlXidDsOoxeuTvcp47E_H8vfE74D3I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nom\": \"ly\",\r\n  \"prenom\": \"ousman\",\r\n  \"telephone\": \"8885558888\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/clients",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"clients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST-type",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mjk4MDc4MzksImV4cCI6MTcyOTgxMTQzOX0.qeDpytNYkWbLVgjExKfBawp6u6L_FGBDdYT6XzJtm0Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nom\": \"Luxe\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/types",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST-chambre",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzAzMTg1NDIsImV4cCI6MTczMDQwMTM0Mn0.HL91t1tYSJ7_txNYtiNDOxIZFnHdQ_IePbzFss2nrps",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"numeroChambre\": 111,\r\n  \"prix\": 75.5,\r\n  \"typeId\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/chambres",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"chambres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST-reservation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzAyOTEzODcsImV4cCI6MTczMDM3NDE4N30.UdSKeeZ2fcoAZdwH80VeUgVDWnM8Ye4sHr9wiib4G2c",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"dateDebut\": \"2024-10-22\",\r\n  \"dateFin\": \"2024-10-23\",\r\n  \"status\": \"CONFIRMEE\",\r\n  \"chambreId\": 1,\r\n  \"clientId\": 1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/reservations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"reservations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxMywicm9sZSI6InV0aWxpc2F0ZXVyIiwiaWF0IjoxNzI5NTA2NzU1LCJleHAiOjE3Mjk1MTAzNTV9.XDT5ac8SwrzIXd4x1kHqkrGuOGeWu-vZULgmCurvIKE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"email\": \"admin@example.com\",\r\n        \"password\": \"securepassword\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "forgot-password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"email\": \"sallfamaaliou@gmail.com\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/password/forgot-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"password",
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reset-password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"password\": \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/password/reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjo1NSwiaWF0IjoxNzMwMzI4NzYyLCJleHAiOjE3MzAzMzU5NjJ9.YZ3Cuv3f83Da_wM5_-CDglS6hZwKi902TsVaxEtLL04",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"password",
+						"reset-password",
+						"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjo1NSwiaWF0IjoxNzMwMzI4NzYyLCJleHAiOjE3MzAzMzU5NjJ9.YZ3Cuv3f83Da_wM5_-CDglS6hZwKi902TsVaxEtLL04"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT-utilisateur",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mjk3NjA0MzcsImV4cCI6MTcyOTc2NDAzN30.Ibim4Z-3zSU9BjSTVQnTz5ayL43TcNv92p8e4sgRhV0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"nom\": \"zubeirH\",\r\n        \"email\": \"zubwd1@gmail.com\",\r\n        \"role\": \"GESTIONNAIRE\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/utilisateurs/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"utilisateurs",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT-client",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mjk3MzE0MzMsImV4cCI6MTcyOTczNTAzM30.NH_cL0kth5gPP29sk16Unx4pXnKmYgGEFJZA0Qng6vc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nom\": \"Coach\",\r\n  \"prenom\": \"Jo\",\r\n  \"telephone\": \"123455688\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/clients/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"clients",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT-type",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mjk3OTc5NjQsImV4cCI6MTcyOTgwMTU2NH0.NSoaq-yYqdvGAWO-ypKIgtrtyhxl_nBkUjqdaNFbrpw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nom\": \"Suite\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/types/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"types",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT-chambre",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mjk3Mjk1MjAsImV4cCI6MTcyOTczMzEyMH0.Vk2ELx1fy14i4zbkrPigTih3CP9nHfS-lfySbI0svY8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"numeroChambre\": 102,\r\n  \"prix\": 150,\r\n  \"typeId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/chambres/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"chambres",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT-reservation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjoxLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzAyODg4ODQsImV4cCI6MTczMDM3MTY4NH0.Jaz0defOKM21GmZvn20_TbkO_CGHg69NOiIKPauIAgU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"dateDebut\": \"2024-10-20\",\r\n  \"dateFin\": \"2024-10-29\",\r\n  \"status\": \"CONFIRMEE\",\r\n  \"chambreId\": 1,\r\n  \"clientId\": 1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/reservations/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"reservations",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE-utilisateur",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjo2NCwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzMwNDczNDc3LCJleHAiOjE3MzA1NTYyNzd9.ASB0-_aSebiarOtvLoLKGIF7aLazEW05OFb7ycLH1-8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/utilisateurs/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"utilisateurs",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE-client",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjo2NCwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzMwNDczNDc3LCJleHAiOjE3MzA1NTYyNzd9.ASB0-_aSebiarOtvLoLKGIF7aLazEW05OFb7ycLH1-8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"nom\": \"Assa\",\r\n        \"email\": \"assa@example.com\",\r\n        \"role\": \"utilisateur\",\r\n        \"motDePasse\": \"hhh\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/clients/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"clients",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE-type",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjo2NCwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzMwNDczNDc3LCJleHAiOjE3MzA1NTYyNzd9.ASB0-_aSebiarOtvLoLKGIF7aLazEW05OFb7ycLH1-8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"nom\": \"Assa\",\r\n        \"email\": \"assa@example.com\",\r\n        \"role\": \"utilisateur\",\r\n        \"motDePasse\": \"hhh\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/types/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"types",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE-chambre",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjo2NCwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzMwNDczNDc3LCJleHAiOjE3MzA1NTYyNzd9.ASB0-_aSebiarOtvLoLKGIF7aLazEW05OFb7ycLH1-8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"nom\": \"Assa\",\r\n        \"email\": \"assa@example.com\",\r\n        \"role\": \"utilisateur\",\r\n        \"motDePasse\": \"hhh\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/chambres/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"chambres",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE-reservation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklkIjo2NCwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzMwNDczNDc3LCJleHAiOjE3MzA1NTYyNzd9.ASB0-_aSebiarOtvLoLKGIF7aLazEW05OFb7ycLH1-8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "jwt",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/reservations/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"reservations",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

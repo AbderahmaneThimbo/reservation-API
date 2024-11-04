@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import i18next from "../i18nextConfig.js";
 
 const prisma = new PrismaClient();
 
 export const creerReservation = async (req, res) => {
   try {
-    const { dateDebut, dateFin, chambreId, clientId } = req.body;
+    const { dateDebut, dateFin, status, chambreId, clientId } = req.body;
     const utilisateurId = req.utilisateur.utilisateurId;
 
     const chambre = await prisma.chambre.findUnique({
@@ -13,7 +14,7 @@ export const creerReservation = async (req, res) => {
     if (!chambre) {
       return res
         .status(404)
-        .json({ message: req.t("reservation.chambreNotFound") });
+        .json({ message: i18next.t("reservation.chambreNotFound") });
     }
 
     const client = await prisma.client.findUnique({
@@ -22,24 +23,27 @@ export const creerReservation = async (req, res) => {
     if (!client) {
       return res
         .status(404)
-        .json({ message: req.t("reservation.clientNotFound") });
+        .json({ message: i18next.t("reservation.clientNotFound") });
     }
 
     await prisma.reservation.create({
       data: {
         dateDebut: new Date(dateDebut),
         dateFin: new Date(dateFin),
+        status,
         chambreId,
         clientId,
         utilisateurId
       }
     });
 
-    res.status(201).json({ message: req.t("reservation.reservationCreated") });
+    res
+      .status(201)
+      .json({ message: i18next.t("reservation.reservationCreated") });
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: req.t("reservation.reservationCreationError"),
+      message: i18next.t("reservation.reservationCreationError"),
       error
     });
   }
@@ -49,8 +53,8 @@ export const afficherReservations = async (req, res) => {
   try {
     const reservations = await prisma.reservation.findMany({
       include: {
-        chambre: false,
-        client: false,
+        chambre: true,
+        client: true,
         utilisateur: false
       }
     });
@@ -58,7 +62,7 @@ export const afficherReservations = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: req.t("reservation.reservationFetchError"),
+      message: i18next.t("reservation.reservationFetchError"),
       error
     });
   }
@@ -72,19 +76,19 @@ export const afficherReservationParId = async (req, res) => {
       include: {
         chambre: true,
         client: true,
-        utilisateur: true
+        utilisateur: { select: { nom: true } }
       }
     });
     if (!reservation) {
       return res
         .status(404)
-        .json({ message: req.t("reservation.reservationNotFound") });
+        .json({ message: i18next.t("reservation.reservationNotFound") });
     }
     res.status(200).json(reservation);
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: req.t("reservation.reservationFetchError"),
+      message: i18next.t("reservation.reservationFetchError"),
       error
     });
   }
@@ -92,7 +96,7 @@ export const afficherReservationParId = async (req, res) => {
 
 export const mettreAJourReservation = async (req, res) => {
   const { id } = req.params;
-  const { dateDebut, dateFin, chambreId, clientId } = req.body;
+  const { dateDebut, dateFin, status, chambreId, clientId } = req.body;
   const utilisateurId = req.utilisateur.utilisateurId;
 
   try {
@@ -102,7 +106,7 @@ export const mettreAJourReservation = async (req, res) => {
     if (!reservation) {
       return res
         .status(404)
-        .json({ message: req.t("reservation.reservationNotFound") });
+        .json({ message: i18next.t("reservation.reservationNotFound") });
     }
 
     const chambre = await prisma.chambre.findUnique({
@@ -111,7 +115,7 @@ export const mettreAJourReservation = async (req, res) => {
     if (!chambre) {
       return res
         .status(404)
-        .json({ message: req.t("reservation.chambreNotFound") });
+        .json({ message: i18next.t("reservation.chambreNotFound") });
     }
 
     const client = await prisma.client.findUnique({
@@ -120,7 +124,7 @@ export const mettreAJourReservation = async (req, res) => {
     if (!client) {
       return res
         .status(404)
-        .json({ message: req.t("reservation.clientNotFound") });
+        .json({ message: i18next.t("reservation.clientNotFound") });
     }
 
     await prisma.reservation.update({
@@ -130,15 +134,16 @@ export const mettreAJourReservation = async (req, res) => {
         dateFin: new Date(dateFin),
         chambreId,
         clientId,
-        utilisateurId
+        utilisateurId,
+        status
       }
     });
 
-    res.json({ message: req.t("reservation.reservationUpdated") });
+    res.json({ message: i18next.t("reservation.reservationUpdated") });
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: req.t("reservation.reservationUpdateError"),
+      message: i18next.t("reservation.reservationUpdateError"),
       error
     });
   }
@@ -153,18 +158,18 @@ export const supprimerReservation = async (req, res) => {
     if (!reservation) {
       return res
         .status(404)
-        .json({ message: req.t("reservation.reservationNotFound") });
+        .json({ message: i18next.t("reservation.reservationNotFound") });
     }
 
     await prisma.reservation.delete({
       where: { id: parseInt(id) }
     });
 
-    res.json({ message: req.t("reservation.reservationDeleted") });
+    res.json({ message: i18next.t("reservation.reservationDeleted") });
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: req.t("reservation.reservationDeleteError"),
+      message: i18next.t("reservation.reservationDeleteError"),
       error
     });
   }

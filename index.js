@@ -1,9 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
-import i18next from "i18next";
-import middleware from "i18next-express-middleware";
-import Backend from "i18next-fs-backend";
-import path from "path";
+
+import i18next from "./src/i18nextConfig.js";
+import i18nextMiddleware from "i18next-express-middleware";
 import cors from "cors";
 import helmet from "helmet";
 
@@ -17,32 +16,19 @@ import reservationRoutes from "./src/routes/reservation.js";
 
 dotenv.config();
 
-i18next.use(Backend).use(middleware.LanguageDetector).init({
-  fallbackLng: "ar",
-  backend: {
-    loadPath: path.resolve("src/locales/{{lng}}.json")
-  },
-  detection: {
-    order: ["querystring", "header"],
-    caches: false
-  },
-  preload: ["fr", "en", "ar"]
-});
-
 const app = express();
 
 app.use(helmet());
 
 const corsOptions = {
-  origin: "*",
+  origin: "http://localhost:5173",
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
 
 app.use(express.json());
 
-app.use(middleware.handle(i18next));
-
+app.use(i18nextMiddleware.handle(i18next));
 app.use("/api/password", passwordResetRoutes);
 app.use("/api/login", loginRoute);
 app.use(

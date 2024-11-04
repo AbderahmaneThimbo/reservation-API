@@ -3,6 +3,7 @@ import {
   creerTypeChambre,
   afficherTypeChambres,
   afficherTypeChambreParId,
+  afficherChambresByTypeChambre,
   mettreAJourTypeChambre,
   supprimerTypeChambre
 } from "../controllers/TypeChambreController.js";
@@ -22,6 +23,11 @@ router.post(
 );
 router.get("/types/:id", authMiddleware, afficherTypeChambreParId);
 router.get("/types", authMiddleware, afficherTypeChambres);
+router.get(
+  "/types/:id/chambres",
+  authMiddleware,
+  afficherChambresByTypeChambre
+);
 router.put(
   "/types/:id",
   authMiddleware,

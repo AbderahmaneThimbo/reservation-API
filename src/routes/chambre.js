@@ -3,6 +3,7 @@ import {
   creerChambre,
   afficherChambres,
   afficherChambreParId,
+  // afficherChambresDisponibles,
   mettreAJourChambre,
   supprimerChambre
 } from "../controllers/ChambreController.js";
@@ -18,6 +19,7 @@ const router = express.Router();
 router.post("/chambres", authMiddleware, creerChambreValidator, creerChambre);
 router.get("/chambres", authMiddleware, afficherChambres);
 router.get("/chambres/:id", authMiddleware, afficherChambreParId);
+// router.get("/disponibles", authMiddleware, afficherChambresDisponibles);
 router.put(
   "/chambres/:id",
   authMiddleware,

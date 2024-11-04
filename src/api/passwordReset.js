@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import prisma from "../config/prisma.js";
 import nodemailer from "nodemailer";
+import i18next from "../i18nextConfig.js";
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.post("/forgot-password", async (req, res) => {
     });
 
     if (!utilisateur) {
-      return res.status(404).json({ message: req.t("user.notFound") });
+      return res.status(404).json({ message: i18next.t("user.notFound") });
     }
 
     const token = jwt.sign(
@@ -41,9 +42,13 @@ router.post("/forgot-password", async (req, res) => {
              <a href="${resetUrl}">${resetUrl}</a>`
     });
 
-    res.status(200).json({ message: req.t("forget.passwordResetEmailSent") });
+    res
+      .status(200)
+      .json({ message: i18next.t("forget.passwordResetEmailSent") });
   } catch (error) {
-    res.status(500).json({ message: req.t("forgeterror.generalError"), error });
+    res
+      .status(500)
+      .json({ message: i18next.t("forgeterror.generalError"), error });
   }
 });
 
@@ -59,7 +64,7 @@ router.post("/reset-password/:token", async (req, res) => {
     });
 
     if (!utilisateur) {
-      return res.status(404).json({ message: req.t("forget.notFound") });
+      return res.status(404).json({ message: i18next.t("forget.notFound") });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -71,11 +76,11 @@ router.post("/reset-password/:token", async (req, res) => {
 
     res
       .status(200)
-      .json({ message: req.t("forget.passwordUpdatedSuccessfully") });
+      .json({ message: i18next.t("forget.passwordUpdatedSuccessfully") });
   } catch (error) {
     res
       .status(400)
-      .json({ message: req.t("forgeterror.invalidOrExpiredToken"), error });
+      .json({ message: i18next.t("forgeterror.invalidOrExpiredToken"), error });
   }
 });
 

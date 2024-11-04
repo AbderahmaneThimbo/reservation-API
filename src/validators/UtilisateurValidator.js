@@ -5,46 +5,46 @@ import { StatusCodes } from "http-status-codes";
 const creerUtilisateurValidator = [
   check("nom")
     .notEmpty()
-    .withMessage((_value, { req }) => req.t("validator.nom.required"))
+    .withMessage("Le nom est obligatoire.")
     .bail()
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
-    .withMessage((_value, { req }) => req.t("validator.nom.invalid"))
+    .withMessage("Le nom contient des caractères invalides.")
     .bail()
-    .isLength({ min: 3 })
-    .withMessage((_value, { req }) => req.t("validator.nom.minLength"))
+    .isLength({ min: 2 })
+    .withMessage("Le nom doit contenir au moins 2 caractères.")
     .bail(),
 
   check("email")
     .notEmpty()
-    .withMessage((_value, { req }) => req.t("validator.email.required"))
+    .withMessage("L'email est obligatoire.")
     .bail()
     .isEmail()
-    .withMessage((_value, { req }) => req.t("validator.email.invalid"))
+    .withMessage("L'email est invalide.")
     .bail()
-    .custom(async (value, { req }) => {
+    .custom(async value => {
       const utilisateurExistant = await prisma.utilisateur.findUnique({
         where: { email: value }
       });
       if (utilisateurExistant) {
-        throw new Error(req.t("validator.email.alreadyUsed"));
+        throw new Error("Cet email est déjà utilisé.");
       }
       return true;
     }),
 
   check("password")
     .notEmpty()
-    .withMessage((_value, { req }) => req.t("validator.password.required"))
+    .withMessage("Le mot de passe est obligatoire.")
     .bail()
     .isLength({ min: 4 })
-    .withMessage((_value, { req }) => req.t("validator.password.minLength"))
+    .withMessage("Le mot de passe doit contenir au moins 4 caractères.")
     .bail(),
 
   check("role")
     .notEmpty()
-    .withMessage((_value, { req }) => req.t("validator.role.required"))
+    .withMessage("Le rôle est obligatoire.")
     .bail()
     .isIn(["ADMIN", "GESTIONNAIRE"])
-    .withMessage((_value, { req }) => req.t("validator.role.invalid"))
+    .withMessage("Le rôle doit être 'ADMIN' ou 'GESTIONNAIRE'.")
     .bail(),
 
   (req, res, next) => {
@@ -61,41 +61,44 @@ const creerUtilisateurValidator = [
 const mettreAjourUtilisateurValidator = [
   param("id")
     .notEmpty()
-    .withMessage((_value, { req }) => req.t("validator.id.required"))
+    .withMessage("L'ID est obligatoire.")
     .bail()
     .custom(async (value, { req }) => {
       const utilisateur = await prisma.utilisateur.findUnique({
         where: { id: parseInt(value) }
       });
       if (!utilisateur) {
-        throw new Error(req.t("validator.user.notFound"));
+        throw new Error("Utilisateur non trouvé.");
       }
+      req.utilisateur = utilisateur;
       return true;
     }),
 
   check("nom")
     .optional()
-    .isLength({ min: 3 })
-    .withMessage((_value, { req }) => req.t("validator.nom.minLength"))
+    .isLength({ min: 2 })
+    .withMessage("Le nom doit contenir au moins 2 caractères.")
     .bail()
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
-    .withMessage((_value, { req }) => req.t("validator.nom.invalid"))
+    .withMessage("Le nom contient des caractères invalides.")
     .bail(),
 
   check("email")
     .optional()
     .isEmail()
-    .withMessage((_value, { req }) => req.t("validator.email.invalid"))
+    .withMessage("L'email est invalide.")
     .bail()
     .custom(async (value, { req }) => {
-      const utilisateurExistant = await prisma.utilisateur.findUnique({
-        where: { email: value }
-      });
-      if (
-        utilisateurExistant &&
-        utilisateurExistant.id !== parseInt(req.params.id)
-      ) {
-        throw new Error(req.t("validator.email.alreadyUsed"));
+      if (value !== req.utilisateur.email) {
+        const utilisateurExistant = await prisma.utilisateur.findUnique({
+          where: { email: value }
+        });
+        if (
+          utilisateurExistant &&
+          utilisateurExistant.id !== parseInt(req.params.id)
+        ) {
+          throw new Error("Cet email est déjà utilisé.");
+        }
       }
       return true;
     }),
@@ -103,13 +106,13 @@ const mettreAjourUtilisateurValidator = [
   check("password")
     .optional()
     .isLength({ min: 4 })
-    .withMessage((_value, { req }) => req.t("validator.password.minLength"))
+    .withMessage("Le mot de passe doit contenir au moins 4 caractères.")
     .bail(),
 
   check("role")
     .optional()
     .isIn(["ADMIN", "GESTIONNAIRE"])
-    .withMessage((_value, { req }) => req.t("validator.role.invalid"))
+    .withMessage("Le rôle doit être 'ADMIN' ou 'GESTIONNAIRE'.")
     .bail(),
 
   (req, res, next) => {
@@ -126,14 +129,14 @@ const mettreAjourUtilisateurValidator = [
 const supprimerUtilisateurValidator = [
   param("id")
     .notEmpty()
-    .withMessage((_value, { req }) => req.t("validator.id.required"))
+    .withMessage("L'ID est obligatoire.")
     .bail()
-    .custom(async (value, { req }) => {
+    .custom(async value => {
       const utilisateur = await prisma.utilisateur.findUnique({
         where: { id: parseInt(value) }
       });
       if (!utilisateur) {
-        throw new Error(req.t("validator.user.notFound"));
+        throw new Error("Utilisateur non trouvé.");
       }
       return true;
     }),

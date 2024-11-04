@@ -1,63 +1,69 @@
 import { check, param, validationResult } from "express-validator";
 import prisma from "../config/prisma.js";
 import { StatusCodes } from "http-status-codes";
+import i18next from "../i18nextConfig.js";
 
 const creerReservationValidator = [
   check("dateDebut")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.dateDebutRequired"))
+    .withMessage(i18next.t("validator.dateDebutRequired"))
     .bail()
     .isISO8601()
-    .withMessage((_, { req }) => req.t("validator.dateDebutInvalid"))
+    .withMessage(i18next.t("validator.dateDebutInvalid"))
     .bail()
     .custom((value, { req }) => {
       if (new Date(value) >= new Date(req.body.dateFin)) {
-        throw new Error(req.t("validator.dateDebutBeforeDateFin"));
+        throw new Error(i18next.t("validator.dateDebutBeforeDateFin"));
       }
       return true;
     }),
 
   check("dateFin")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.dateFinRequired"))
+    .withMessage(i18next.t("validator.dateFinRequired"))
     .bail()
     .isISO8601()
-    .withMessage((_, { req }) => req.t("validator.dateFinInvalid"))
+    .withMessage(i18next.t("validator.dateFinInvalid"))
     .bail(),
 
   check("chambreId")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.chambreIdRequired"))
+    .withMessage(i18next.t("validator.chambreIdRequired"))
     .bail()
     .isInt({ min: 1 })
-    .withMessage((_, { req }) => req.t("validator.chambreIdPositiveInt"))
+    .withMessage(i18next.t("validator.chambreIdPositiveInt"))
     .bail()
-    .custom(async (value, { req }) => {
+    .custom(async value => {
       const chambre = await prisma.chambre.findUnique({
         where: { id: value }
       });
       if (!chambre) {
-        throw new Error(req.t("validator.chambreNotFound"));
+        throw new Error(i18next.t("validator.chambreNotFound"));
       }
       return true;
     }),
 
   check("clientId")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.clientIdRequired"))
+    .withMessage(i18next.t("validator.clientIdRequired"))
     .bail()
     .isInt({ min: 1 })
-    .withMessage((_, { req }) => req.t("validator.clientIdPositiveInt"))
+    .withMessage(i18next.t("validator.clientIdPositiveInt"))
     .bail()
-    .custom(async (value, { req }) => {
+    .custom(async value => {
       const client = await prisma.client.findUnique({
         where: { id: value }
       });
       if (!client) {
-        throw new Error(req.t("validator.clientNotFound"));
+        throw new Error(i18next.t("validator.clientNotFound"));
       }
       return true;
     }),
+
+  check("status")
+    .optional()
+    .isIn(["EN_ATTENTE", "CONFIRMEE"])
+    .withMessage(i18next.t("validator.statusInvalid")),
 
   (req, res, next) => {
     const errors = validationResult(req);
@@ -73,14 +79,14 @@ const creerReservationValidator = [
 const mettreAjourReservationValidator = [
   param("id")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.reservationIdRequired"))
+    .withMessage(i18next.t("validator.reservationIdRequired"))
     .bail()
-    .custom(async (value, { req }) => {
+    .custom(async value => {
       const reservation = await prisma.reservation.findUnique({
         where: { id: parseInt(value) }
       });
       if (!reservation) {
-        throw new Error(req.t("validator.reservationNotFound"));
+        throw new Error(i18next.t("validator.reservationNotFound"));
       }
       return true;
     }),
@@ -88,11 +94,11 @@ const mettreAjourReservationValidator = [
   check("dateDebut")
     .optional()
     .isISO8601()
-    .withMessage((_, { req }) => req.t("validator.dateDebutInvalid"))
+    .withMessage(i18next.t("validator.dateDebutInvalid"))
     .bail()
     .custom((value, { req }) => {
       if (req.body.dateFin && new Date(value) >= new Date(req.body.dateFin)) {
-        throw new Error(req.t("validator.dateDebutBeforeDateFin"));
+        throw new Error(i18next.t("validator.dateDebutBeforeDateFin"));
       }
       return true;
     }),
@@ -100,20 +106,20 @@ const mettreAjourReservationValidator = [
   check("dateFin")
     .optional()
     .isISO8601()
-    .withMessage((_, { req }) => req.t("validator.dateFinInvalid"))
+    .withMessage(i18next.t("validator.dateFinInvalid"))
     .bail(),
 
   check("chambreId")
     .optional()
     .isInt({ min: 1 })
-    .withMessage((_, { req }) => req.t("validator.chambreIdPositiveInt"))
+    .withMessage(i18next.t("validator.chambreIdPositiveInt"))
     .bail()
-    .custom(async (value, { req }) => {
+    .custom(async value => {
       const chambre = await prisma.chambre.findUnique({
         where: { id: value }
       });
       if (!chambre) {
-        throw new Error(req.t("validator.chambreNotFound"));
+        throw new Error(i18next.t("validator.chambreNotFound"));
       }
       return true;
     }),
@@ -121,17 +127,22 @@ const mettreAjourReservationValidator = [
   check("clientId")
     .optional()
     .isInt({ min: 1 })
-    .withMessage((_, { req }) => req.t("validator.clientIdPositiveInt"))
+    .withMessage(i18next.t("validator.clientIdPositiveInt"))
     .bail()
-    .custom(async (value, { req }) => {
+    .custom(async value => {
       const client = await prisma.client.findUnique({
         where: { id: value }
       });
       if (!client) {
-        throw new Error(req.t("validator.clientNotFound"));
+        throw new Error(i18next.t("validator.clientNotFound"));
       }
       return true;
     }),
+
+  check("status")
+    .optional()
+    .isIn(["EN_ATTENTE", "CONFIRMEE"])
+    .withMessage(i18next.t("validator.statusInvalid")),
 
   (req, res, next) => {
     const errors = validationResult(req);
@@ -147,14 +158,14 @@ const mettreAjourReservationValidator = [
 const supprimerReservationValidator = [
   param("id")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.reservationIdRequired"))
+    .withMessage(i18next.t("validator.reservationIdRequired"))
     .bail()
-    .custom(async (value, { req }) => {
+    .custom(async value => {
       const reservation = await prisma.reservation.findUnique({
         where: { id: parseInt(value) }
       });
       if (!reservation) {
-        throw new Error(req.t("validator.reservationNotFound"));
+        throw new Error(i18next.t("validator.reservationNotFound"));
       }
       return true;
     }),

@@ -12,6 +12,10 @@ enum Role {
   GESTIONNAIRE
 }
 
+enum ReservationStatus {
+  EN_ATTENTE
+  CONFIRMEE
+}
 model Utilisateur {
   id           Int      @id @default(autoincrement())
   nom          String
@@ -55,11 +59,13 @@ model Chambre {
   typeId        Int
   type          TypeChambre @relation(fields: [typeId], references: [id])
   utilisateurId Int?     
-  utilisateur   Utilisateur? @relation(fields: [utilisateurId], references: [id], onDelete: Cascade) 
+  utilisateur   Utilisateur? @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
   reservations  Reservation[]
+  image         String? 
 
   @@map("chambres")
 }
+
 
 model Reservation {
   id            Int      @id @default(autoincrement())
@@ -70,7 +76,8 @@ model Reservation {
   clientId      Int
   client        Client @relation(fields: [clientId], references: [id])
   utilisateurId Int?     
-  utilisateur   Utilisateur? @relation(fields: [utilisateurId], references: [id]) 
+  utilisateur   Utilisateur? @relation(fields: [utilisateurId], references: [id])
+  status        ReservationStatus @default(EN_ATTENTE)
 
   @@map("reservations")
 }

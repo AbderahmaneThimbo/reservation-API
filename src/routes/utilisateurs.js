@@ -1,4 +1,5 @@
 import express from "express";
+import prisma from "../config/prisma.js";
 import {
   creerUtilisateur,
   afficherUtilisateurParId,
@@ -48,5 +49,26 @@ router.delete(
   supprimerUtilisateurValidator,
   supprimerUtilisateur
 );
+
+router.get("/me", authMiddleware, async (req, res) => {
+  try {
+    const utilisateur = await prisma.utilisateur.findUnique({
+      where: { id: req.utilisateur.utilisateurId }
+    });
+
+    if (!utilisateur) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+    return res.status(200).json({
+      user: {
+        nom: utilisateur.nom,
+        email: utilisateur.email,
+        role: utilisateur.role
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Erreur serveur", error });
+  }
+});
 
 export default router;

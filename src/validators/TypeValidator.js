@@ -5,10 +5,10 @@ import { StatusCodes } from "http-status-codes";
 export const creerTypeChambreValidator = [
   check("nom")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.nomRequired"))
+    .withMessage("Le nom est obligatoire.")
     .bail()
     .isLength({ max: 50 })
-    .withMessage((_, { req }) => req.t("validator.maxLength"))
+    .withMessage("Le nom ne doit pas dépasser 50 caractères.")
     .bail(),
 
   (req, res, next) => {
@@ -25,14 +25,14 @@ export const creerTypeChambreValidator = [
 export const mettreAJourTypeChambreValidator = [
   param("id")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.idRequired"))
+    .withMessage("L'ID est obligatoire.")
     .bail()
     .custom(async value => {
       const typeChambre = await prisma.typeChambre.findUnique({
         where: { id: parseInt(value) }
       });
       if (!typeChambre) {
-        throw new Error(req.t("validator.notFound"));
+        throw new Error("Type de chambre non trouvé.");
       }
       return true;
     }),
@@ -40,9 +40,9 @@ export const mettreAJourTypeChambreValidator = [
   check("nom")
     .optional()
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
-    .withMessage((_, { req }) => req.t("validator.invalidName"))
+    .withMessage("Le nom contient des caractères invalides.")
     .isLength({ max: 50 })
-    .withMessage((_, { req }) => req.t("validator.maxLength"))
+    .withMessage("Le nom ne doit pas dépasser 50 caractères.")
     .bail(),
 
   (req, res, next) => {
@@ -59,14 +59,14 @@ export const mettreAJourTypeChambreValidator = [
 export const supprimerTypeChambreValidator = [
   param("id")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.idRequired"))
+    .withMessage("L'ID est obligatoire.")
     .bail()
     .custom(async value => {
       const typeChambre = await prisma.typeChambre.findUnique({
         where: { id: parseInt(value) }
       });
       if (!typeChambre) {
-        throw new Error(req.t("validator.notFound"));
+        throw new Error("Type de chambre non trouvé.");
       }
       return true;
     }),

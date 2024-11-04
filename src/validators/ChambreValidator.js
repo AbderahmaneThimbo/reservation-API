@@ -1,43 +1,44 @@
 import { check, param, validationResult } from "express-validator";
 import prisma from "../config/prisma.js";
 import { StatusCodes } from "http-status-codes";
+import i18next from "../i18nextConfig.js";
 
 const creerChambreValidator = [
   check("numeroChambre")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.numeroChambreRequired"))
+    .withMessage(i18next.t("validator.numeroChambreRequired"))
     .bail()
     .isInt({ min: 1 })
-    .withMessage((_, { req }) => req.t("validator.numeroChambrePositiveInt"))
+    .withMessage(i18next.t("validator.numeroChambrePositiveInt"))
     .bail()
-    .custom(async (value, { req }) => {
+    .custom(async value => {
       const chambreExistante = await prisma.chambre.findUnique({
         where: { numeroChambre: value }
       });
       if (chambreExistante) {
-        throw new Error(req.t("validator.numeroChambreExists"));
+        throw new Error(i18next.t("validator.numeroChambreExists"));
       }
       return true;
     }),
 
   check("prix")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.prixRequired"))
+    .withMessage(i18next.t("validator.prixRequired"))
     .bail()
     .isFloat({ gt: 0 })
-    .withMessage((_, { req }) => req.t("validator.prixPositive"))
+    .withMessage(i18next.t("validator.prixPositive"))
     .bail(),
 
   check("typeId")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.typeIdRequired"))
+    .withMessage(i18next.t("validator.typeIdRequired"))
     .bail()
-    .custom(async (value, { req }) => {
+    .custom(async value => {
       const type = await prisma.typeChambre.findUnique({
         where: { id: value }
       });
       if (!type) {
-        throw new Error(req.t("validator.typeIdNotFound"));
+        throw new Error(i18next.t("validator.typeIdNotFound"));
       }
       return true;
     }),
@@ -56,14 +57,14 @@ const creerChambreValidator = [
 const mettreAjourChambreValidator = [
   param("id")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.idRequired"))
+    .withMessage(i18next.t("validator.idRequired"))
     .bail()
-    .custom(async (value, { req }) => {
+    .custom(async value => {
       const chambre = await prisma.chambre.findUnique({
         where: { id: parseInt(value) }
       });
       if (!chambre) {
-        throw new Error(req.t("validator.chambreNotFound"));
+        throw new Error(i18next.t("validator.chambreNotFound"));
       }
       return true;
     }),
@@ -71,14 +72,14 @@ const mettreAjourChambreValidator = [
   check("numeroChambre")
     .optional()
     .isInt({ min: 1 })
-    .withMessage((_, { req }) => req.t("validator.numeroChambrePositiveInt"))
+    .withMessage(i18next.t("validator.numeroChambrePositiveInt"))
     .bail()
     .custom(async (value, { req }) => {
       const chambreExistante = await prisma.chambre.findUnique({
         where: { numeroChambre: value }
       });
       if (chambreExistante && chambreExistante.id !== parseInt(req.params.id)) {
-        throw new Error(req.t("validator.numeroChambreExists"));
+        throw new Error(i18next.t("validator.numeroChambreExists"));
       }
       return true;
     }),
@@ -86,7 +87,7 @@ const mettreAjourChambreValidator = [
   check("prix")
     .optional()
     .isFloat({ gt: 0 })
-    .withMessage((_, { req }) => req.t("validator.prixPositive"))
+    .withMessage(i18next.t("validator.prixPositive"))
     .bail(),
 
   check("typeId").optional().custom(async value => {
@@ -94,7 +95,7 @@ const mettreAjourChambreValidator = [
       where: { id: value }
     });
     if (!type) {
-      throw new Error(req.t("validator.typeIdNotFound"));
+      throw new Error(i18next.t("validator.typeIdNotFound"));
     }
     return true;
   }),
@@ -113,14 +114,14 @@ const mettreAjourChambreValidator = [
 const supprimerChambreValidator = [
   param("id")
     .notEmpty()
-    .withMessage((_, { req }) => req.t("validator.idRequired"))
+    .withMessage(i18next.t("validator.idRequired"))
     .bail()
-    .custom(async (value, { req }) => {
+    .custom(async value => {
       const chambre = await prisma.chambre.findUnique({
         where: { id: parseInt(value) }
       });
       if (!chambre) {
-        throw new Error(req.t("validator.chambreNotFound"));
+        throw new Error(i18next.t("validator.chambreNotFound"));
       }
       return true;
     }),
