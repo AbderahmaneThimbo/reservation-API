@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Delete all existing data
   await prisma.reservation.deleteMany();
   await prisma.chambre.deleteMany();
   await prisma.typeChambre.deleteMany();
@@ -13,7 +12,6 @@ async function main() {
   const adminPassword = await bcrypt.hash("securepassword", 10);
   const gestionnairePassword = await bcrypt.hash("securepassword", 10);
 
-  // Create sample data
   const adminUser = await prisma.utilisateur.create({
     data: {
       nom: "Admin User",
@@ -32,7 +30,6 @@ async function main() {
     }
   });
 
-  // Create multiple clients and get their IDs
   const client1 = await prisma.client.create({
     data: {
       nom: "Client",
@@ -60,7 +57,6 @@ async function main() {
     }
   });
 
-  // Create types of rooms and get their IDs
   const typeChambre1 = await prisma.typeChambre.create({
     data: {
       nom: "Suite Deluxe",
@@ -82,7 +78,6 @@ async function main() {
     }
   });
 
-  // Create multiple rooms using the type IDs
   const chambre1 = await prisma.chambre.create({
     data: {
       numeroChambre: 101,
@@ -110,7 +105,6 @@ async function main() {
     }
   });
 
-  // Create multiple reservations using the created IDs
   await prisma.reservation.create({
     data: {
       dateDebut: new Date("2024-11-01T14:00:00Z"),

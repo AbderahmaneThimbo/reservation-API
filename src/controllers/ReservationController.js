@@ -93,6 +93,39 @@ export const afficherReservationParId = async (req, res) => {
     });
   }
 };
+export const afficherChambresDisponibles = async (req, res) => {
+  try {
+    const chambresDisponibles = await prisma.chambre.findMany({
+      where: {
+        reservations: {
+          none: {
+            OR: [
+              {
+                dateDebut: { lte: new Date() },
+                dateFin: { gte: new Date() }
+              }
+            ]
+          }
+        }
+      },
+      include: {
+        type: true,
+        utilisateur: { select: { nom: true } }
+      }
+    });
+
+    return res.status(200).json(chambresDisponibles);
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des chambres disponibles :",
+      error
+    );
+    return res.status(500).json({
+      message: i18next.t("chambre.erreurRecuperationChambresDisponibles"),
+      error
+    });
+  }
+};
 
 export const mettreAJourReservation = async (req, res) => {
   const { id } = req.params;
@@ -108,32 +141,44 @@ export const mettreAJourReservation = async (req, res) => {
         .status(404)
         .json({ message: i18next.t("reservation.reservationNotFound") });
     }
+    const parsedDateDebut = dateDebut
+      ? new Date(dateDebut)
+      : reservation.dateDebut;
+    const parsedDateFin = dateFin ? new Date(dateFin) : reservation.dateFin;
 
-    const chambre = await prisma.chambre.findUnique({
-      where: { id: chambreId }
-    });
-    if (!chambre) {
+    if (isNaN(parsedDateDebut) || isNaN(parsedDateFin)) {
       return res
-        .status(404)
-        .json({ message: i18next.t("reservation.chambreNotFound") });
+        .status(400)
+        .json({ message: "Les dates fournies sont invalides." });
     }
-
-    const client = await prisma.client.findUnique({
-      where: { id: clientId }
-    });
-    if (!client) {
-      return res
-        .status(404)
-        .json({ message: i18next.t("reservation.clientNotFound") });
+    if (chambreId) {
+      const chambre = await prisma.chambre.findUnique({
+        where: { id: chambreId }
+      });
+      if (!chambre) {
+        return res
+          .status(404)
+          .json({ message: i18next.t("reservation.chambreNotFound") });
+      }
+    }
+    if (clientId) {
+      const client = await prisma.client.findUnique({
+        where: { id: clientId }
+      });
+      if (!client) {
+        return res
+          .status(404)
+          .json({ message: i18next.t("reservation.clientNotFound") });
+      }
     }
 
     await prisma.reservation.update({
       where: { id: parseInt(id) },
       data: {
-        dateDebut: new Date(dateDebut),
-        dateFin: new Date(dateFin),
-        chambreId,
-        clientId,
+        dateDebut: parsedDateDebut,
+        dateFin: parsedDateFin,
+        chambreId: chambreId || reservation.chambreId,
+        clientId: clientId || reservation.clientId,
         utilisateurId,
         status
       }

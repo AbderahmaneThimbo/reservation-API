@@ -162,7 +162,7 @@ export const supprimerTypeChambre = async (req, res) => {
     if (chambresUtilisantType) {
       return res
         .status(400)
-        .json({ message: i18next.t("typeChambre.typeInUse") });
+        .json({ message: i18next.t("typeChambre.typeInUse"), warning: true });
     }
 
     await prisma.typeChambre.delete({

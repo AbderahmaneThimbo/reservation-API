@@ -6,39 +6,43 @@ import i18next from "../i18nextConfig.js";
 const creerChambreValidator = [
   check("numeroChambre")
     .notEmpty()
-    .withMessage(i18next.t("validator.numeroChambreRequired"))
+    .withMessage(i18next.t("Le numéro de la chambre est obligatoire."))
     .bail()
     .isInt({ min: 1 })
-    .withMessage(i18next.t("validator.numeroChambrePositiveInt"))
+    .withMessage(
+      i18next.t("Le numéro de la chambre doit être un entier positif")
+    )
     .bail()
     .custom(async value => {
       const chambreExistante = await prisma.chambre.findUnique({
         where: { numeroChambre: value }
       });
       if (chambreExistante) {
-        throw new Error(i18next.t("validator.numeroChambreExists"));
+        throw new Error(i18next.t("Ce numéro de chambre est déjà utilisé."));
       }
       return true;
     }),
 
   check("prix")
     .notEmpty()
-    .withMessage(i18next.t("validator.prixRequired"))
+    .withMessage(i18next.t("Le prix est obligatoire"))
     .bail()
     .isFloat({ gt: 0 })
-    .withMessage(i18next.t("validator.prixPositive"))
+    .withMessage(i18next.t("Le prix doit être un nombre supérieur à 0."))
     .bail(),
 
   check("typeId")
     .notEmpty()
-    .withMessage(i18next.t("validator.typeIdRequired"))
+    .withMessage(i18next.t("Le type de la chambre est obligatoire"))
     .bail()
     .custom(async value => {
       const type = await prisma.typeChambre.findUnique({
         where: { id: value }
       });
       if (!type) {
-        throw new Error(i18next.t("validator.typeIdNotFound"));
+        throw new Error(
+          i18next.t("Le type de chambre sélectionné n'existe pas.")
+        );
       }
       return true;
     }),
@@ -57,14 +61,14 @@ const creerChambreValidator = [
 const mettreAjourChambreValidator = [
   param("id")
     .notEmpty()
-    .withMessage(i18next.t("validator.idRequired"))
+    .withMessage(i18next.t("L'id est obligatoire."))
     .bail()
     .custom(async value => {
       const chambre = await prisma.chambre.findUnique({
         where: { id: parseInt(value) }
       });
       if (!chambre) {
-        throw new Error(i18next.t("validator.chambreNotFound"));
+        throw new Error(i18next.t("La chambre n'existe pas"));
       }
       return true;
     }),
@@ -72,14 +76,16 @@ const mettreAjourChambreValidator = [
   check("numeroChambre")
     .optional()
     .isInt({ min: 1 })
-    .withMessage(i18next.t("validator.numeroChambrePositiveInt"))
+    .withMessage(
+      i18next.t("Le numéro de la chambre doit être un entier positif.")
+    )
     .bail()
     .custom(async (value, { req }) => {
       const chambreExistante = await prisma.chambre.findUnique({
         where: { numeroChambre: value }
       });
       if (chambreExistante && chambreExistante.id !== parseInt(req.params.id)) {
-        throw new Error(i18next.t("validator.numeroChambreExists"));
+        throw new Error(i18next.t("Ce numéro de chambre est déjà utilisé."));
       }
       return true;
     }),
@@ -87,7 +93,7 @@ const mettreAjourChambreValidator = [
   check("prix")
     .optional()
     .isFloat({ gt: 0 })
-    .withMessage(i18next.t("validator.prixPositive"))
+    .withMessage(i18next.t("Le prix doit être un nombre supérieur à 0."))
     .bail(),
 
   check("typeId").optional().custom(async value => {
@@ -95,7 +101,7 @@ const mettreAjourChambreValidator = [
       where: { id: value }
     });
     if (!type) {
-      throw new Error(i18next.t("validator.typeIdNotFound"));
+      throw new Error(i18next.t("Le type de la chambre est obligatoire"));
     }
     return true;
   }),

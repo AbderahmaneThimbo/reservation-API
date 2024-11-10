@@ -5,7 +5,8 @@ import {
   afficherUtilisateurParId,
   afficherUtilisateurs,
   supprimerUtilisateur,
-  mettreAjourUtilisateur
+  mettreAjourUtilisateur,
+  mettreAjourProfil
 } from "../controllers/UtilisateurController.js";
 import { authMiddleware, adminMiddleware } from "../middlewares/auth.js";
 import {
@@ -42,6 +43,7 @@ router.put(
   mettreAjourUtilisateurValidator,
   mettreAjourUtilisateur
 );
+router.put("/profil", authMiddleware, mettreAjourProfil);
 router.delete(
   "/utilisateurs/:id",
   authMiddleware,

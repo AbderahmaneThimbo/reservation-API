@@ -95,42 +95,40 @@ export const afficherChambreParId = async (req, res) => {
   }
 };
 
-// export const afficherChambresDisponibles = async (req, res) => {
-//   try {
-//     const chambresDisponibles = await prisma.chambre.findMany({
-//       where: {
-//         reservations: {
-//           none: {
-//             OR: [
-//               {
-//                 dateDebut: {
-//                   lte: new Date() // Si la réservation commence avant ou à la date actuelle
-//                 },
-//                 dateFin: {
-//                   gte: new Date() // Et se termine après ou à la date actuelle
-//                 }
-//               }
-//             ]
-//           }
-//         }
-//       },
-//       include: {
-//         type: true // Inclure les détails du type de chambre
-//       }
-//     });
+export const afficherChambresDisponibles = async (req, res) => {
+  try {
+    const chambresDisponibles = await prisma.chambre.findMany({
+      where: {
+        reservations: {
+          none: {
+            OR: [
+              {
+                dateDebut: { lte: new Date() },
+                dateFin: { gte: new Date() },
+                status: "CONFIRMEE"
+              }
+            ]
+          }
+        }
+      },
+      include: {
+        type: true,
+        utilisateur: { select: { nom: true } }
+      }
+    });
 
-//     return res.status(200).json(chambresDisponibles);
-//   } catch (error) {
-//     console.error(
-//       "Erreur lors de la récupération des chambres disponibles :",
-//       error
-//     );
-//     return res.status(500).json({
-//       message: i18next.t("chambre.erreurRecuperationChambresDisponibles"),
-//       error
-//     });
-//   }
-// };
+    return res.status(200).json(chambresDisponibles);
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des chambres disponibles :",
+      error
+    );
+    return res.status(500).json({
+      message: i18next.t("chambre.erreurRecuperationChambresDisponibles"),
+      error
+    });
+  }
+};
 
 export const mettreAJourChambre = async (req, res) => {
   const { id } = req.params;
@@ -198,9 +196,10 @@ export const supprimerChambre = async (req, res) => {
     });
 
     if (chambreReservation) {
-      return res
-        .status(400)
-        .json({ message: i18next.t("chambre.chambreAvecReservation") });
+      return res.status(400).json({
+        message: i18next.t("chambre.chambreAvecReservation"),
+        warning: true
+      });
     }
 
     await prisma.chambre.delete({

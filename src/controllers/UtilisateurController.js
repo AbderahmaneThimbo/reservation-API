@@ -139,3 +139,44 @@ export const supprimerUtilisateur = async (req, res) => {
     return res.status(400).json({ message: i18next.t("error.generalError") });
   }
 };
+
+export const mettreAjourProfil = async (req, res) => {
+  const { nom, email, password } = req.body;
+  const utilisateurId = req.utilisateur.utilisateurId;
+
+  if (!utilisateurId) {
+    return res.status(400).json({ message: "Utilisateur non trouvé." });
+  }
+
+  try {
+    const dataToUpdate = {};
+
+    if (nom) dataToUpdate.nom = nom;
+    if (email) dataToUpdate.email = email;
+    if (password) dataToUpdate.password = await bcrypt.hash(password, 10);
+    if (email) {
+      const utilisateurExistant = await prisma.utilisateur.findUnique({
+        where: { email }
+      });
+
+      if (utilisateurExistant && utilisateurExistant.id !== utilisateurId) {
+        return res.status(400).json({ message: "L'email est déjà utilisé." });
+      }
+    }
+
+    const utilisateurMisAJour = await prisma.utilisateur.update({
+      where: { id: utilisateurId },
+      data: dataToUpdate
+    });
+
+    return res.status(200).json({
+      message: "Profil mis à jour avec succès.",
+      utilisateur: utilisateurMisAJour
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Erreur lors de la mise à jour du profil." });
+  }
+};

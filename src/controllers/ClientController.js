@@ -121,7 +121,6 @@ export const mettreAJourClient = async (req, res) => {
 
 export const supprimerClient = async (req, res) => {
   const { id } = req.params;
-
   try {
     const client = await prisma.client.findUnique({
       where: { id: parseInt(id) }
@@ -130,15 +129,15 @@ export const supprimerClient = async (req, res) => {
     if (!client) {
       return res.status(404).json({ message: i18next.t("client.notFound") });
     }
-
     const clientReservation = await prisma.reservation.findFirst({
       where: { clientId: parseInt(id) }
     });
 
     if (clientReservation) {
-      return res
-        .status(400)
-        .json({ message: i18next.t("client.hasReservation") });
+      return res.status(400).json({
+        message: i18next.t("client.hasReservation"),
+        warning: true
+      });
     }
     await prisma.client.delete({
       where: { id: parseInt(id) }
@@ -147,8 +146,9 @@ export const supprimerClient = async (req, res) => {
     return res.json({ message: i18next.t("client.deleteSuccess") });
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .json({ message: i18next.t("client.deleteError"), error });
+    return res.status(500).json({
+      message: i18next.t("client.deleteError"),
+      error
+    });
   }
 };
