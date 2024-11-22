@@ -24,7 +24,8 @@ export const creerUtilisateur = async (req, res) => {
         nom,
         email,
         role: role === "ADMIN" ? "ADMIN" : "GESTIONNAIRE",
-        password: hashedPassword
+        password: hashedPassword,
+        status: true
       }
     });
 
@@ -54,7 +55,14 @@ export const afficherUtilisateurParId = async (req, res) => {
   const { id } = req.params;
   try {
     const utilisateur = await prisma.utilisateur.findUnique({
-      where: { id: parseInt(id) }
+      where: { id: parseInt(id) },
+      select: {
+        id: true,
+        nom: true,
+        email: true,
+        role: true,
+        status: true
+      }
     });
 
     if (!utilisateur) {
@@ -70,13 +78,14 @@ export const afficherUtilisateurParId = async (req, res) => {
 
 export const mettreAjourUtilisateur = async (req, res) => {
   const { id } = req.params;
-  const { nom, email, role, password } = req.body;
+  const { nom, email, role, password, status } = req.body;
 
   try {
     const dataToUpdate = {
       nom,
       email,
-      role: role === "ADMIN" ? "ADMIN" : "GESTIONNAIRE"
+      role: role === "ADMIN" ? "ADMIN" : "GESTIONNAIRE",
+      status
     };
 
     if (password) {
@@ -141,7 +150,7 @@ export const supprimerUtilisateur = async (req, res) => {
 };
 
 export const mettreAjourProfil = async (req, res) => {
-  const { nom, email, password } = req.body;
+  const { nom, email, currentPassword, newPassword } = req.body;
   const utilisateurId = req.utilisateur.utilisateurId;
 
   if (!utilisateurId) {
@@ -149,19 +158,46 @@ export const mettreAjourProfil = async (req, res) => {
   }
 
   try {
-    const dataToUpdate = {};
+    const utilisateur = await prisma.utilisateur.findUnique({
+      where: { id: utilisateurId }
+    });
 
+    if (!utilisateur) {
+      return res.status(404).json({ message: "Utilisateur non trouvé." });
+    }
+
+    if (newPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({
+          message:
+            "Veuillez fournir votre mot de passe actuel pour le modifier."
+        });
+      }
+
+      const isPasswordValid = await bcrypt.compare(
+        currentPassword,
+        utilisateur.password
+      );
+      if (!isPasswordValid) {
+        return res
+          .status(401)
+          .json({ message: "Mot de passe actuel incorrect." });
+      }
+    }
+
+    const dataToUpdate = {};
     if (nom) dataToUpdate.nom = nom;
-    if (email) dataToUpdate.email = email;
-    if (password) dataToUpdate.password = await bcrypt.hash(password, 10);
     if (email) {
       const utilisateurExistant = await prisma.utilisateur.findUnique({
         where: { email }
       });
-
       if (utilisateurExistant && utilisateurExistant.id !== utilisateurId) {
         return res.status(400).json({ message: "L'email est déjà utilisé." });
       }
+      dataToUpdate.email = email;
+    }
+    if (newPassword) {
+      dataToUpdate.password = await bcrypt.hash(newPassword, 10);
     }
 
     const utilisateurMisAJour = await prisma.utilisateur.update({
@@ -169,9 +205,11 @@ export const mettreAjourProfil = async (req, res) => {
       data: dataToUpdate
     });
 
+    const { password, ...utilisateurSansMotDePasse } = utilisateurMisAJour;
+
     return res.status(200).json({
       message: "Profil mis à jour avec succès.",
-      utilisateur: utilisateurMisAJour
+      utilisateur: utilisateurSansMotDePasse
     });
   } catch (error) {
     console.error(error);

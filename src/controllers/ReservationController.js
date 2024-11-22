@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { jsPDF } from "jspdf";
 import i18next from "../i18nextConfig.js";
 
 const prisma = new PrismaClient();
@@ -217,5 +218,39 @@ export const supprimerReservation = async (req, res) => {
       message: i18next.t("reservation.reservationDeleteError"),
       error
     });
+  }
+};
+
+export const telechargerRecuReservation = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const reservation = await prisma.reservation.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        chambre: { select: { numeroChambre: true } },
+        client: { select: { nom: true, prenom: true, telephone: true } },
+        utilisateur: { select: { nom: true } }
+      }
+    });
+
+    if (!reservation) {
+      return res.status(404).json({ message: "Réservation introuvable" });
+    }
+
+    res.status(200).json({
+      id: reservation.id,
+      client: reservation.client,
+      chambre: reservation.chambre,
+      utilisateur: reservation.utilisateur,
+      dateDebut: reservation.dateDebut,
+      dateFin: reservation.dateFin,
+      status: reservation.status
+    });
+  } catch (error) {
+    console.error("Erreur lors de la récupération des données :", error);
+    res
+      .status(500)
+      .json({ message: "Erreur lors de la récupération des données." });
   }
 };

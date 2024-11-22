@@ -4,7 +4,8 @@ import {
   afficherReservations,
   afficherReservationParId,
   mettreAJourReservation,
-  supprimerReservation
+  supprimerReservation,
+  telechargerRecuReservation
 } from "../controllers/ReservationController.js";
 import { authMiddleware } from "../middlewares/auth.js";
 import {
@@ -35,5 +36,6 @@ router.delete(
   supprimerReservationValidator,
   supprimerReservation
 );
+router.get("/reservations/:id/recu", telechargerRecuReservation);
 
 export default router;

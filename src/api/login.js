@@ -17,6 +17,13 @@ router.post("/", async (req, res) => {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
 
+    if (!utilisateur.status) {
+      return res.status(403).json({
+        message:
+          "Votre compte est désactivé. Veuillez contacter un administrateur."
+      });
+    }
+
     const passwordValide = await bcrypt.compare(password, utilisateur.password);
     if (!passwordValide) {
       return res.status(401).json({ message: "Mot de passe incorrect" });
@@ -30,6 +37,7 @@ router.post("/", async (req, res) => {
 
     return res.json({ token });
   } catch (error) {
+    console.error("Erreur lors de la connexion :", error);
     return res.status(500).json({ message: "Erreur serveur", error });
   }
 });

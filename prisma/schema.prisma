@@ -20,8 +20,9 @@ model Utilisateur {
   id           Int      @id @default(autoincrement())
   nom          String
   email        String   @unique
-  role         Role     @default(GESTIONNAIRE) 
+  role         Role     @default(GESTIONNAIRE)
   password     String
+  status       Boolean?  @default(true)
   clients      Client[]
   chambres     Chambre[]
   typeChambres TypeChambre[]
@@ -29,6 +30,7 @@ model Utilisateur {
 
   @@map("utilisateurs")
 }
+
 
 model Client {
   id            Int      @id @default(autoincrement())
