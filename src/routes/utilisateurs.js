@@ -43,7 +43,7 @@ router.put(
   mettreAjourUtilisateurValidator,
   mettreAjourUtilisateur
 );
-router.put("/profil", authMiddleware, mettreAjourProfil);
+router.post("/profil", authMiddleware, mettreAjourProfil);
 router.delete(
   "/utilisateurs/:id",
   authMiddleware,
@@ -61,8 +61,10 @@ router.get("/me", authMiddleware, async (req, res) => {
     if (!utilisateur) {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
+
     return res.status(200).json({
       user: {
+        id: utilisateur.id,
         nom: utilisateur.nom,
         email: utilisateur.email,
         role: utilisateur.role
