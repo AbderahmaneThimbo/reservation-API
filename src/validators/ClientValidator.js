@@ -10,8 +10,8 @@ export const creerClientValidator = [
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
     .withMessage("Le nom contient des caractères invalides.")
     .bail()
-    .isLength({ min: 2 })
-    .withMessage("Le nom doit comporter au moins 2 caractères.")
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Le nom doit comporter au moins 2, maximum 50 caractères.")
     .bail(),
 
   check("prenom")
@@ -21,8 +21,8 @@ export const creerClientValidator = [
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
     .withMessage("Le prénom contient des caractères invalides.")
     .bail()
-    .isLength({ min: 2 })
-    .withMessage("Le prénom doit comporter au moins 2 caractères.")
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Le prénom comporter au moins 2, maximum 50 caractères.")
     .bail(),
 
   check("telephone")
@@ -32,7 +32,7 @@ export const creerClientValidator = [
     .matches(/^[0-9]+$/)
     .withMessage("Le numéro de téléphone contient des caractères invalides.")
     .bail()
-    .isLength({ min: 8, max: 15 })
+    .isLength({ min: 8, max: 20 })
     .withMessage("Le numéro de téléphone doit avoir entre 8 et 15 caractères.")
     .bail()
     .custom(async value => {
@@ -73,8 +73,8 @@ export const mettreAjourClientValidator = [
 
   check("nom")
     .optional()
-    .isLength({ min: 2 })
-    .withMessage("Le nom doit comporter au moins 2 caractères.")
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Le nom doit avoir entre 2 et 50 caractères..")
     .bail()
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
     .withMessage("Le nom contient des caractères invalides.")
@@ -82,8 +82,8 @@ export const mettreAjourClientValidator = [
 
   check("prenom")
     .optional()
-    .isLength({ min: 2 })
-    .withMessage("Le prénom doit comporter au moins 2 caractères.")
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Le prénom doit avoir entre 2 et 50 caractères.")
     .bail()
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
     .withMessage("Le prénom contient des caractères invalides.")
@@ -94,8 +94,8 @@ export const mettreAjourClientValidator = [
     .matches(/^[0-9]+$/)
     .withMessage("Le numéro de téléphone contient des caractères invalides.")
     .bail()
-    .isLength({ min: 8, max: 15 })
-    .withMessage("Le numéro de téléphone doit avoir entre 8 et 15 caractères.")
+    .isLength({ min: 8, max: 20 })
+    .withMessage("Le numéro de téléphone doit avoir entre 8 et 20 caractères.")
     .bail()
     .custom(async (value, { req }) => {
       const clientExistant = await prisma.client.findUnique({

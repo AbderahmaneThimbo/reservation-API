@@ -10,8 +10,8 @@ const creerUtilisateurValidator = [
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
     .withMessage("Le nom contient des caractères invalides.")
     .bail()
-    .isLength({ min: 2 })
-    .withMessage("Le nom doit contenir au moins 2 caractères.")
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Le nom doit contenir entre 2 et 50caractères.")
     .bail(),
 
   check("email")
@@ -76,8 +76,8 @@ const mettreAjourUtilisateurValidator = [
 
   check("nom")
     .optional()
-    .isLength({ min: 2 })
-    .withMessage("Le nom doit contenir au moins 2 caractères.")
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Le nom doit contenir entre 2 et 50 caractères.")
     .bail()
     .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/)
     .withMessage("Le nom contient des caractères invalides.")

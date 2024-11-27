@@ -15,7 +15,9 @@ Cette API permet de gérer les réservations, les utilisateurs, les clients, les
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 - **Node.js**
+- **Express**
 - **PostgreSQL**
+- **Prisma**
 - **Postman** (pour tester l'API)
 
 
@@ -60,13 +62,6 @@ POSTGRES_DB=gestion_reservation
 NODE_ENV=production
 ```
 
-## Génération des données de test (Seeding)
-
-Le projet inclut un fichier de seed qui génère des données de test dans la base de données pour les entités telles que les utilisateurs, clients, chambres, etc.
-
-```bash
-npm run seed
-```
 
 ## Utilisation
 
@@ -78,161 +73,27 @@ npm start
 
 L'API sera accessible à `http://localhost:3000/api`.
 
-## Endpoints de l'API
-voici un exemple des endpoints
+## Utilisation de Prisma
+Prisma est utilisé pour gérer la base de données et faciliter les migrations ainsi que la génération des modèles. Vous devez exécuter les commandes suivantes pour préparer Prisma dans votre projet.
 
-## Authentification 
+### Générer les fichiers Prisma
 
-L’API utilise un système de JSON Web Token (JWT) pour authentifier les utilisateurs. Les utilisateurs doivent se connecter pour obtenir un jeton qui sera utilisé pour accéder aux routes sécurisées.
-## Endpoints d'authentification
+Après avoir configuré votre base de données et modifié le fichier `.env`, vous devez générer les fichiers nécessaires à Prisma en utilisant la commande suivante :
 
-### POST /api/login
-
-
-- **Description** :  Authentifie l’utilisateur et renvoie un JWT. **http://localhost:3000/api/login**
-- **Corps de la requête** :
-- 
-```json
-{
-  "email": "utilisateur@example.com",
-  "password": "votreMotDePasse"
-}
-
-```
-- **Réponse** :
-
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
+```bash
+npx prisma generate
 ```
 
-### **Reservations**
-
-### GET /reservations
-
-- **Description** : Récupère toutes les réservations. **http://localhost:3000/api/reservations**
-- **Réponse** :
-
-```json
-[
-  {
-        "id": 35,
-        "dateDebut": "2024-11-01T14:00:00.000Z",
-        "dateFin": "2024-11-10T10:00:00.000Z",
-        "chambreId": 40,
-        "clientId": 43,
-        "utilisateurId": 65,
-        "status": "CONFIRMEE",
-        "chambre": {
-            "id": 40,
-            "numeroChambre": 101,
-            "prix": 1500,
-            "typeId": 56,
-            "utilisateurId": 64
-        },
-        "client": {
-            "id": 43,
-            "nom": "Client",
-            "prenom": "One",
-            "telephone": "123456789",
-            "utilisateurId": 65
-        }
-    },
-]
+```bash
+npx prisma migrate dev
 ```
+## Génération des données de test (Seeding)
 
-### GET /reservations
+Le projet inclut un fichier de seed qui génère des données de test dans la base de données pour les entités telles que les utilisateurs, clients, chambres, etc.
 
-- **Description** : Récupère une reservation par ID. **http://localhost:3000/api/reservations/35**
-- **Réponse** :
-
-```json
-
-  {
-        "id": 35,
-        "dateDebut": "2024-11-01T14:00:00.000Z",
-        "dateFin": "2024-11-10T10:00:00.000Z",
-        "chambreId": 40,
-        "clientId": 43,
-        "utilisateurId": 65,
-        "status": "CONFIRMEE",
-        "chambre": {
-            "id": 40,
-            "numeroChambre": 101,
-            "prix": 1500,
-            "typeId": 56,
-            "utilisateurId": 64
-        },
-        "client": {
-            "id": 43,
-            "nom": "Client",
-            "prenom": "One",
-            "telephone": "123456789",
-            "utilisateurId": 65
-        }
-    }
+```bash
+npm run seed
 ```
-
-### POST /reservations
-
-- **Description** : Crée une nouvelle une réservation. **http://localhost:3000/api/reservations**
-- **Corps de la requête** :
-
-```json
-{
-  "dateDebut": "2024-10-22",
-  "dateFin": "2024-10-23",
-  "status": "CONFIRMEE",
-  "chambreId": 1,
-  "clientId": 1
-}
-
-```
-
-- **Réponse** :
-
-```json
-{
-  "message": "Reservation ajoutée avec succès"
-}
-```
-
-### PUT /reservations/:id
-
-- **Description** : Met à jour une reservation existante par ID. **http://localhost:3000/api/reservations/5**
-- **Corps de la requête** :
-
-```json
-{
-  "dateDebut": "2024-10-22",
-  "dateFin": "2024-10-23",
-  "status": "CONFIRMEE",
-  "chambreId": 33,
-  "clientId": 1
-}
-```
-
-- **Réponse** :
-
-```json
-{
-  "message": "Reservation mise à jour avec succès"
-}
-```
-
-### DELETE /reservations/:id
-
-- **Description** : Supprime une reservation par ID. **http://localhost:3000/api/reservations/5**
-- **Réponse** :
-
-```json
-{
-  "message": "Reservation supprimée avec succès"
-}
-```
-
-
 
 ## Tests unitaires
 
